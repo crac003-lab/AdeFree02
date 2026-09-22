@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✈️ 旅行西语大冒险 Viajes · 童趣学习乐园</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234dabf7'/%3E%3Ctext x='32' y='45' font-size='34' text-anchor='middle'%3E%F0%9F%A6%89%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+--sky:#4dabf7;--sky-d:#228be6;--sky-l:#e7f5ff;
+--sun:#ffd43b;--coral:#ff8787;--coral-d:#fa5252;--mint:#63e6be;--mint-d:#20c997;
+--grape:#b197fc;--grape-d:#9775fa;--peach:#ffa94d;--pink:#faa2c1;
+--green:#51cf66;--red:#ff6b6b;
+--bg:#eef6ff;--card:#fff;--text:#2b3a4a;--muted:#8aa0b4;--border:#e3eefb;
+--radius:22px;--shadow:0 4px 14px rgba(77,171,247,.12);--shadow-lg:0 8px 26px rgba(77,171,247,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 12% 8%,#d6ebff 0,transparent 38%),radial-gradient(circle at 88% 20%,#fff3bf33 0,transparent 30%),radial-gradient(circle at 50% 100%,#e5dbff33 0,transparent 40%)}
+.container{max-width:560px;margin:0 auto;padding:16px 16px 30px}
+button{font-family:inherit;cursor:pointer;border:none}
+
+/* ===== 密码屏 ===== */
+#lockScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;
+background:linear-gradient(160deg,#74c0fc 0%,#4dabf7 45%,#9775fa 100%)}
+#lockScreen::before,#lockScreen::after{content:"☁️";position:absolute;font-size:64px;opacity:.85;animation:floaty 6s ease-in-out infinite}
+#lockScreen::before{top:12%;left:10%}#lockScreen::after{bottom:14%;right:10%;animation-delay:1.5s;font-size:52px}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.lock-card{background:#fff;border-radius:28px;padding:34px 26px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 60px rgba(20,60,120,.28);animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.lock-mascot{font-size:64px;line-height:1;margin-bottom:8px;animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.lock-card h1{font-size:22px;font-weight:800;color:var(--sky-d)}
+.lock-card p{font-size:13px;color:var(--muted);margin:6px 0 20px}
+.lock-input{width:100%;border:3px solid var(--border);border-radius:16px;padding:15px 16px;font-size:17px;text-align:center;letter-spacing:2px;outline:none;font-family:inherit;transition:border .2s}
+.lock-input:focus{border-color:var(--sky)}
+.lock-btn{width:100%;margin-top:14px;background:linear-gradient(135deg,var(--sky),var(--grape));color:#fff;font-size:17px;font-weight:800;padding:15px;border-radius:16px;box-shadow:0 6px 16px rgba(77,171,247,.4);transition:transform .15s}
+.lock-btn:active{transform:scale(.96)}
+.lock-err{color:var(--coral-d);font-size:13px;margin-top:10px;min-height:18px;font-weight:700}
+.lock-shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+
+/* ===== 首页 ===== */
+.hero{background:linear-gradient(135deg,#74c0fc,#4dabf7 55%,#9775fa);color:#fff;border-radius:26px;padding:24px 22px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.hero .cloud{position:absolute;font-size:72px;opacity:.22;right:-6px;top:-14px}
+.hero .plane{position:absolute;font-size:40px;right:18px;bottom:10px;opacity:.9;transform:rotate(-12deg)}
+.hero h1{font-size:22px;font-weight:800;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.hero .mascot{font-size:30px;animation:bob 3s ease-in-out infinite;display:inline-block}
+.hero p{font-size:12.5px;opacity:.95}
+.hero-stats{display:flex;gap:22px;margin-top:16px}
+.hero-stat .num{font-size:25px;font-weight:800;text-shadow:0 2px 6px rgba(0,0,0,.12)}
+.hero-stat .label{font-size:11px;opacity:.88}
+
+.daily-goal{background:var(--card);border-radius:var(--radius);padding:15px 17px;margin-bottom:14px;box-shadow:var(--shadow)}
+.daily-goal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.daily-goal-title{font-size:14px;font-weight:800}
+.daily-goal-count{font-size:13px;color:var(--sky-d);font-weight:800}
+.daily-goal-bar{height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+.daily-goal-fill{height:100%;background:linear-gradient(90deg,var(--sun),var(--peach),var(--coral));border-radius:6px;transition:width .6s}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat-mini{background:var(--card);border-radius:16px;padding:12px 4px;text-align:center;box-shadow:var(--shadow)}
+.stat-mini .num{font-size:18px;font-weight:800;color:var(--sky-d)}
+.stat-mini .label{font-size:10px;color:var(--muted);margin-top:2px}
+.level-row{display:flex;gap:7px;margin-bottom:16px}
+.level-pill{flex:1;background:var(--card);border-radius:13px;padding:8px 2px;text-align:center;box-shadow:var(--shadow)}
+.level-pill .lv{font-size:11px;font-weight:800}
+.level-pill .pc{font-size:12px;font-weight:800;color:var(--text)}
+.lv-c-A1{color:#2f9e44}.lv-c-A2{color:#e8590c}.lv-c-B1{color:#1971c2}.lv-c-B2{color:#7048e8}.lv-c-C1{color:#c2255c}
+
+.section-title{font-size:16px;font-weight:800;margin:20px 0 12px;display:flex;align-items:center;gap:8px}
+.section-title .st-ico{font-size:19px}
+
+.mode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.mode-card{border-radius:20px;padding:17px 15px 15px;transition:transform .15s;box-shadow:var(--shadow);position:relative;overflow:hidden;color:#fff}
+.mode-card:active{transform:scale(.95)}
+.mode-card.m1{background:linear-gradient(135deg,#74c0fc,#4dabf7)}
+.mode-card.m2{background:linear-gradient(135deg,#ffa94d,#ff8787)}
+.mode-card.m3{background:linear-gradient(135deg,#b197fc,#9775fa)}
+.mode-card.m4{background:linear-gradient(135deg,#63e6be,#20c997)}
+.mode-card .icon{font-size:30px;margin-bottom:5px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
+.mode-card .title{font-size:15px;font-weight:800}
+.mode-card .desc{font-size:11px;opacity:.95;margin-top:2px}
+.mode-card .badge{position:absolute;top:9px;right:9px;background:#fff;color:var(--coral-d);font-size:11px;padding:2px 8px;border-radius:11px;font-weight:800}
+.mode-card .deco{position:absolute;right:-8px;bottom:-12px;font-size:56px;opacity:.18}
+
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.theme-card{background:var(--card);border-radius:18px;padding:15px 7px 12px;text-align:center;box-shadow:var(--shadow);transition:transform .15s;position:relative;overflow:hidden}
+.theme-card:active{transform:scale(.94)}
+.theme-card::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:var(--tc);border-radius:0 0 6px 6px}
+.theme-icon{font-size:31px;margin-bottom:3px}
+.theme-name{font-size:12.5px;font-weight:800;line-height:1.3}
+.theme-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.theme-bar{height:6px;background:var(--border);border-radius:3px;margin:7px 12px 0;overflow:hidden}
+.theme-fill{height:100%;background:var(--tc);border-radius:3px}
+.theme-progress{font-size:10px;color:var(--tc);font-weight:800;margin-top:4px}
+
+.achievements{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.achievement{text-align:center;padding:11px 4px;background:var(--card);border-radius:15px;box-shadow:var(--shadow)}
+.achievement .icon{font-size:25px;filter:grayscale(1);opacity:.3}
+.achievement.unlocked .icon{filter:none;opacity:1;animation:wiggle 1.2s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.achievement .name{font-size:10px;color:var(--muted);margin-top:4px;font-weight:600}
+.achievement.unlocked .name{color:var(--text)}
+
+.tip-bar{margin:20px 0 6px;padding:17px;background:var(--card);border-radius:18px;font-size:11.5px;color:var(--muted);line-height:1.9;text-align:center;border:2px dashed #cfe6ff}
+.tip-bar strong{color:var(--sky-d)}
+
+/* ===== 主题页 ===== */
+.theme-banner{border-radius:24px;padding:23px 21px;color:#fff;margin-bottom:15px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.theme-banner .big-icon{font-size:52px;position:absolute;right:14px;top:12px;opacity:.45}
+.theme-banner h2{font-size:21px;font-weight:800}
+.theme-banner p{font-size:12.5px;opacity:.95;margin-top:4px;max-width:74%}
+.theme-banner .progress-line{font-size:12.5px;margin-top:13px;font-weight:700;opacity:.97;background:rgba(255,255,255,.2);display:inline-block;padding:5px 13px;border-radius:20px}
+.lesson-list{display:flex;flex-direction:column;gap:10px}
+.lesson-card{background:var(--card);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);transition:transform .15s;border-left:6px solid var(--tc)}
+.lesson-card:active{transform:scale(.98)}
+.lesson-card.done{background:#f4fff8}
+.lesson-num{width:38px;height:38px;border-radius:14px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--tc);flex-shrink:0}
+.lesson-card.done .lesson-num{background:#d3f9d8;color:#2f9e44}
+.lesson-main{flex:1;min-width:0}
+.lesson-name{font-size:14.5px;font-weight:800}
+.lesson-meta{font-size:11px;color:var(--muted);margin-top:3px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.lesson-go{color:var(--muted);font-size:20px;flex-shrink:0}
+
+.lv-pill{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:9px}
+.lv-A1{background:#d3f9d8;color:#2b8a3e}.lv-A2{background:#fff3bf;color:#e67700}.lv-B1{background:#d0ebff;color:#1971c2}.lv-B2{background:#e5dbff;color:#7048e8}.lv-C1{background:#ffdeeb;color:#c2255c}
+
+/* ===== 学习卡 ===== */
+.card-head{background:var(--card);border-radius:22px;padding:19px;box-shadow:var(--shadow);margin-bottom:12px;border-top:6px solid var(--tc)}
+.card-head .crumbs{font-size:11.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.card-head h2{font-size:20px;font-weight:800}
+.block{background:var(--card);border-radius:22px;padding:17px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.block h3{font-size:15px;font-weight:800;margin-bottom:13px;display:flex;align-items:center;gap:8px}
+.block h3 .n{color:#fff;width:25px;height:25px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.b1 .n{background:var(--mint-d)}.b2 .n{background:var(--sky)}.b3 .n{background:var(--peach)}.b4 .n{background:var(--grape-d)}.b5 .n{background:var(--coral-d)}
+.vocab-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.vocab-item{background:var(--sky-l);border-radius:14px;padding:11px 13px;display:flex;align-items:center;gap:8px;transition:transform .12s,background .2s;min-width:0}
+.vocab-item:active{transform:scale(.95);background:#d0ebff}
+.vocab-es{font-size:14.5px;font-weight:800;color:var(--sky-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vocab-zh{font-size:11.5px;color:#5a7184;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;text-align:right}
+.vocab-item .spk{font-size:13px;flex-shrink:0}
+.pat-card{background:#f7faff;border:1.5px solid var(--border);border-radius:15px;padding:13px 15px;margin-bottom:9px}
+.pat-card:last-child{margin-bottom:0}
+.pat-es{font-size:15.5px;font-weight:800;line-height:1.55;color:#1f3a52}
+.pat-es .slot{color:#e8590c;font-weight:800;background:#fff4e6;border-radius:6px;padding:0 4px}
+.pat-tag{display:inline-block;font-size:9.5px;font-weight:800;background:var(--grape);color:#fff;border-radius:8px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.pat-zh{font-size:12.5px;color:#5a7184;margin-top:4px}
+.pat-actions{margin-top:7px}
+.mini-spk{background:var(--sky-l);border:none;color:var(--sky-d);font-size:12px;font-weight:700;cursor:pointer;padding:4px 11px;border-radius:10px}
+.mission-box{background:linear-gradient(135deg,#fff9db,#fff4e6);border-radius:15px;padding:15px 17px;font-size:13.5px;line-height:1.7}
+.mission-box .goal{font-weight:800;color:#d9480f}
+.mission-steps{margin:10px 0 0;list-style:none;font-size:12.5px;color:#5c4a35}
+.mission-steps li{padding:4px 0 4px 27px;position:relative}
+.mission-steps li::before{content:attr(data-n);position:absolute;left:0;top:5px;width:18px;height:18px;border-radius:50%;background:var(--peach);color:#fff;font-size:10.5px;display:flex;align-items:center;justify-content:center;font-weight:800}
+.swap-group{margin-bottom:12px}.swap-group:last-child{margin-bottom:0}
+.swap-label{font-size:12px;font-weight:800;margin-bottom:7px}
+.swap-chips{display:flex;flex-wrap:wrap;gap:7px}
+.swap-chip{background:linear-gradient(135deg,#e7f5ff,#ebfaff);color:var(--sky-d);border:1.5px solid #c5e3fb;border-radius:11px;padding:7px 13px;font-size:12.5px;font-weight:700;transition:transform .12s}
+.swap-chip:active{transform:scale(.93)}
+.task-box{border-radius:15px;padding:14px 15px;margin-bottom:11px;background:#f7faff;border:1.5px solid var(--border)}
+.task-box:last-child{margin-bottom:0}
+.task-title{font-size:13.5px;font-weight:800;margin-bottom:9px}
+.rec-controls{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.rec-btn{border-radius:13px;padding:10px 18px;font-size:13.5px;font-weight:800;background:linear-gradient(135deg,#ff8787,#fa5252);color:#fff;box-shadow:0 4px 10px rgba(250,82,82,.3)}
+.rec-btn.recording{background:linear-gradient(135deg,#adb5bd,#868e96);box-shadow:none}
+.rec-time{font-size:14px;font-weight:800;color:var(--coral-d);font-variant-numeric:tabular-nums}
+.rec-hint{font-size:11px;color:var(--muted);margin-top:9px}
+#recPlay{width:100%;margin-top:10px;display:none;height:38px}
+.diary-area{width:100%;min-height:100px;border:2.5px solid var(--border);border-radius:14px;padding:12px 13px;font-size:16px;font-family:inherit;resize:vertical;outline:none;line-height:1.65;background:#fff}
+.diary-area:focus{border-color:var(--sky)}
+.diary-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px;font-weight:600}
+.hint-line{font-size:12px;color:#5a7184;margin-top:9px;padding-top:9px;border-top:2px dashed var(--border);line-height:2}
+.hint-line .h{color:var(--mint-d);cursor:pointer;font-weight:700;text-decoration:underline;text-decoration-style:dotted}
+.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.big-btn{border-radius:15px;padding:15px;font-size:14.5px;font-weight:800;text-align:center;transition:transform .12s}
+.big-btn:active{transform:scale(.96)}
+.big-btn.primary{background:linear-gradient(135deg,#74c0fc,#4dabf7);color:#fff;box-shadow:0 5px 13px rgba(77,171,247,.35)}
+.big-btn.secondary{background:var(--card);color:var(--text);border:2px solid var(--border)}
+.big-btn.full{grid-column:1/-1;background:linear-gradient(135deg,#69db7c,#51cf66);color:#fff;box-shadow:0 5px 13px rgba(81,207,102,.35)}
+
+/* ===== 答题 ===== */
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;padding:0 3px}
+.back-btn{background:none;border:none;font-size:14px;color:var(--sky-d);cursor:pointer;font-weight:800;padding:6px 0}
+.quiz-meta{display:flex;align-items:center;gap:11px}
+.quiz-progress{font-size:13px;color:var(--muted);font-weight:700}
+.quiz-score{font-size:13px;font-weight:800;color:var(--mint-d)}
+.question-card{background:var(--card);border-radius:24px;padding:23px 19px;margin-bottom:12px;box-shadow:var(--shadow)}
+.q-tags{display:flex;gap:6px;margin-bottom:13px;flex-wrap:wrap}
+.q-tag{font-size:10px;padding:3px 10px;border-radius:11px;font-weight:800}
+.tag-es2zh{background:#d3f9d8;color:#2b8a3e}.tag-zh2es{background:#c5f6fa;color:#0c8599}.tag-listen{background:#d0ebff;color:#1971c2}
+.tag-fill{background:#ffe8cc;color:#d9480f}.tag-order{background:#e5dbff;color:#7048e8}.tag-situation{background:#ffdeeb;color:#c2255c}.tag-judge{background:#fff3bf;color:#e67700}
+.tag-scene{background:var(--bg);color:var(--muted)}
+.q-text{font-size:18px;font-weight:800;line-height:1.6;margin-bottom:17px}
+.q-text .es-word{color:var(--sky-d);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+.q-sub{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:12px}
+.big-listen{width:100%;border-radius:18px;padding:24px;font-size:44px;background:linear-gradient(135deg,#d0ebff,#e7f5ff);margin-bottom:16px;transition:transform .15s}
+.big-listen:active{transform:scale(.96)}
+.big-listen .lt{display:block;font-size:13px;color:var(--sky-d);font-weight:800;margin-top:6px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#f7faff;border:2.5px solid var(--border);border-radius:15px;padding:14px 15px;font-size:14.5px;font-weight:600;transition:transform .12s;display:flex;align-items:center;gap:12px;text-align:left}
+.option:active{transform:scale(.98)}
+.option.correct{border-color:var(--green);background:#ebfbee}
+.option.wrong{border-color:var(--red);background:#fff5f5}
+.opt-letter{width:30px;height:30px;border-radius:11px;background:var(--card);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;flex-shrink:0}
+.option.correct .opt-letter{background:var(--green);color:#fff;border-color:var(--green)}
+.option.wrong .opt-letter{background:var(--red);color:#fff;border-color:var(--red)}
+.order-pool,.order-answer{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;border-radius:14px;padding:10px;margin-bottom:11px}
+.order-pool{background:#f7faff;border:2px dashed #bcd8f5}
+.order-answer{background:var(--sky-l);border:2px solid #b3d9fb}
+.order-token{border:none;border-radius:11px;padding:9px 14px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#b197fc,#9775fa);color:#fff;box-shadow:0 3px 7px rgba(151,117,250,.35);transition:transform .12s}
+.order-token:active{transform:scale(.93)}
+.order-token.used{visibility:hidden}
+.order-answer .order-token{background:linear-gradient(135deg,#74c0fc,#4dabf7);box-shadow:0 3px 7px rgba(77,171,247,.35)}
+.order-hint{font-size:11.5px;color:var(--muted);margin-bottom:8px;font-weight:600}
+.judge-opts{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.judge-btn{border-radius:17px;padding:22px 10px;font-size:17px;font-weight:800;background:#f7faff;border:2.5px solid var(--border);transition:transform .12s}
+.judge-btn:active{transform:scale(.95)}
+.judge-btn.correct{border-color:var(--green);background:#ebfbee;color:#2b8a3e}
+.judge-btn.wrong{border-color:var(--red);background:#fff5f5;color:#c92a2a}
+.judge-btn .ji{font-size:30px;display:block;margin-bottom:4px}
+.explain{background:linear-gradient(135deg,#e7f5ff,#f0f8ff);border-radius:15px;padding:14px 16px;margin-top:15px;font-size:13px;color:#34495e;display:none}
+.explain.show{display:block;animation:pop .3s}
+.explain-title{font-weight:800;margin-bottom:5px;color:var(--sky-d)}
+.cheer{font-weight:800;font-size:14px;margin-bottom:3px}
+.cheer.good{color:var(--mint-d)}.cheer.bad{color:var(--coral-d)}
+.speak-btn{background:none;border:none;color:var(--sky-d);cursor:pointer;font-size:12.5px;padding:0;margin-top:9px;font-weight:700;text-decoration:underline}
+.next-btn{width:100%;background:linear-gradient(135deg,#74c0fc,#4dabf7);color:#fff;border:none;border-radius:16px;padding:16px;font-size:16.5px;font-weight:800;margin-top:13px;display:none;box-shadow:0 6px 15px rgba(77,171,247,.4)}
+.next-btn.show{display:block;animation:pop .3s}
+
+.result-hero{border-radius:26px;padding:34px 24px;text-align:center;margin-bottom:14px;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.result-emoji{font-size:58px;margin-bottom:6px;animation:bob 2s ease-in-out infinite}
+.result-title{font-size:21px;font-weight:800;margin-bottom:3px}
+.result-score{font-size:48px;font-weight:800;margin:8px 0}
+.result-detail{font-size:14px;opacity:.96;font-weight:600}
+.analysis-card{background:var(--card);border-radius:22px;padding:19px;margin-bottom:12px;box-shadow:var(--shadow)}
+.analysis-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+.analysis-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:2px dotted var(--border);font-size:13px;font-weight:600}
+.analysis-row:last-child{border-bottom:none}
+.weak-tag{background:#fff5f5;color:var(--coral-d);padding:3px 10px;border-radius:11px;font-size:11px;font-weight:800}
+.strong-tag{background:#ebfbee;color:#2b8a3e;padding:3px 10px;border-radius:11px;font-size:11px;font-weight:800}
+.result-actions{display:flex;flex-direction:column;gap:10px;margin-top:15px}
+.result-btn{padding:15px;border-radius:16px;font-size:15.5px;font-weight:800;border:none;transition:transform .12s}
+.result-btn:active{transform:scale(.97)}
+.result-btn.primary{background:linear-gradient(135deg,#74c0fc,#4dabf7);color:#fff;box-shadow:0 6px 15px rgba(77,171,247,.35)}
+.result-btn.secondary{background:var(--card);color:var(--text);border:2.5px solid var(--border)}
+
+.page{display:none}.page.active{display:block}
+.top-bar{position:fixed;top:0;left:0;height:5px;background:linear-gradient(90deg,var(--sun),var(--coral));z-index:200;transition:width .35s;border-radius:0 3px 3px 0}
+#confettiLayer{position:fixed;inset:0;pointer-events:none;z-index:900;overflow:hidden}
+.confetti-p{position:absolute;top:-30px;font-size:22px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.toast{position:fixed;top:74px;left:50%;transform:translateX(-50%);background:rgba(43,58,74,.95);color:#fff;padding:12px 24px;border-radius:15px;font-size:14px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;max-width:88%;text-align:center}
+@media(max-width:480px){.vocab-list{grid-template-columns:1fr}.vocab-zh{white-space:normal}}
+@media(min-width:768px){.container{max-width:680px}}
+</style>
+</head>
+<body>
+
+<!-- ===== 密码屏 ===== -->
+<div id="lockScreen">
+<div class="lock-card">
+<div class="lock-mascot">🦉</div>
+<h1>¡Hola! 旅行西语大冒险</h1>
+<p>猫头鹰 Pepe 守在乐园门口 🗝️<br>请输入访问密码，和 Pepe 一起闯关</p>
+<input type="password" class="lock-input" id="lockInput" placeholder="请输入密码" autocomplete="off" inputmode="text">
+<button class="lock-btn" id="lockBtn">🚀 开始冒险</button>
+<div class="lock-err" id="lockErr"></div>
+</div>
+</div>
+
+<div id="confettiLayer"></div>
+<div id="appRoot" style="display:none">
+<div class="top-bar" id="topBar" style="width:0%"></div>
+
+<!-- ===== 首页 ===== -->
+<div class="page active" id="homePage"><div class="container">
+<div class="hero">
+<span class="cloud">☁️</span>
+<h1><span class="mascot">🦉</span>旅行西语大冒险</h1>
+<p>9 大任务地图 · 跟着 Pepe 把旅行西语玩着学会 ✈️</p>
+<div class="hero-stats">
+<div class="hero-stat"><div class="num" id="heroStreak">0</div><div class="label">🔥 连续天数</div></div>
+<div class="hero-stat"><div class="num" id="heroTotal">0</div><div class="label">⭐ 已闯关</div></div>
+<div class="hero-stat"><div class="num" id="heroRate">0%</div><div class="label">🏅 正确率</div></div>
+</div>
+<span class="plane">✈️</span>
+</div>
+
+<div class="daily-goal">
+<div class="daily-goal-header"><span class="daily-goal-title">🎯 今日冒险目标</span><span class="daily-goal-count" id="dailyCount">0/30题</span></div>
+<div class="daily-goal-bar"><div class="daily-goal-fill" id="dailyFill" style="width:0%"></div></div>
+</div>
+
+<div class="stats-row">
+<div class="stat-mini"><div class="num" id="sCards">0/0</div><div class="label">学完卡片</div></div>
+<div class="stat-mini"><div class="num" id="sDone">0</div><div class="label">掌握题目</div></div>
+<div class="stat-mini"><div class="num" id="sRate">0%</div><div class="label">总正确率</div></div>
+<div class="stat-mini"><div class="num" id="sWrong">0</div><div class="label">待修理</div></div>
+</div>
+<div class="level-row" id="levelRow"></div>
+
+<div class="section-title"><span class="st-ico">🎮</span>开始玩游戏</div>
+<div class="mode-grid">
+<div class="mode-card m1" onclick="startDaily()"><div class="icon">🌟</div><div class="title">每日冒险</div><div class="desc">每天30题，越闯越溜</div><span class="deco">🗺️</span></div>
+<div class="mode-card m2" onclick="startWeak()"><div class="icon">🔧</div><div class="title">错题修理铺</div><div class="desc">把不会的题修好</div><span class="badge" id="weakBadge" style="display:none">0</span><span class="deco">🧰</span></div>
+<div class="mode-card m3" onclick="startPattern()"><div class="icon">🎭</div><div class="title">情景小剧场</div><div class="desc">30句实景对话</div><span class="deco">🎬</span></div>
+<div class="mode-card m4" onclick="startRandom()"><div class="icon">🎲</div><div class="title">幸运随机题</div><div class="desc">摇到什么玩什么</div><span class="deco">🍀</span></div>
+</div>
+
+<div class="section-title"><span class="st-ico">🧭</span>任务地图</div>
+<div class="theme-grid" id="themeGrid"></div>
+
+<div class="section-title"><span class="st-ico">🏆</span>我的勋章墙</div>
+<div class="achievements" id="achievements"></div>
+
+<div class="tip-bar">
+<strong>🦉 Pepe 的学习小贴士</strong><br>
+每张任务卡五步玩：认词汇 → 听句型 → 做任务 → 换词造句 → 录音/写日记<br>
+点任意西语词句都能听发音，大胆跟读；题型有认一认、听一听、填一填、排一排、演一演、判一判，怎么问都不怕～<br>
+例句为旅行场景原创教学内容，融入西班牙与拉美本土口语，难度 A1–C1。
+</div>
+</div></div>
+
+<!-- ===== 主题页 ===== -->
+<div class="page" id="themePage"><div class="container">
+<div class="theme-banner" id="themeBanner"></div>
+<div class="lesson-list" id="lessonList"></div>
+<div style="height:14px"></div>
+<button class="big-btn secondary" onclick="goHome()" style="width:100%">🏠 回到乐园首页</button>
+</div></div>
+
+<!-- ===== 学习卡页 ===== -->
+<div class="page" id="cardPage"><div class="container">
+<div class="quiz-header">
+<button class="back-btn" id="cardBackBtn">← 返回</button>
+<div class="quiz-meta"><span class="quiz-progress" id="cardStep"></span></div>
+</div>
+<div id="cardContent"></div>
+</div></div>
+
+<!-- ===== 答题页 ===== -->
+<div class="page" id="quizPage"><div class="container">
+<div class="quiz-header">
+<button class="back-btn" onclick="quitQuiz()">← 先退出</button>
+<div class="quiz-meta"><span class="quiz-progress" id="quizProgress"></span><span class="quiz-score" id="quizScore"></span></div>
+</div>
+<div id="quizContent"></div>
+</div></div>
+
+<!-- ===== 结果页 ===== -->
+<div class="page" id="resultPage"><div class="container">
+<div class="result-hero" id="resultHero">
+<div class="result-emoji" id="rEmoji">🎉</div>
+<div class="result-title" id="rTitle">闯关完成！</div>
+<div class="result-score" id="rScore">0/0</div>
+<div class="result-detail" id="rDetail"></div>
+</div>
+<div class="analysis-card"><h3>📈 各题型表现</h3><div id="moduleAnalysis"></div></div>
+<div class="analysis-card" id="levelCard"><h3>🎚️ 难度等级表现</h3><div id="levelAnalysis"></div></div>
+<div class="analysis-card" id="weakCard" style="display:none"><h3>🔧 需要修理的地方</h3><div id="weakAnalysis"></div></div>
+<div class="result-actions">
+<button class="result-btn primary" onclick="retryWrong()">🔧 修理本轮错题</button>
+<button class="result-btn secondary" onclick="goHome()">🏠 回到乐园首页</button>
+</div>
+</div></div>
+
+</div>
+<script>
+const THEMES = [{"name":"旅行计划","icon":"🗓️","color":"#228be6","desc":"选目的地、看天气定季节、做预算、订票订酒店、签证保险、收拾行李、改签投诉","id":1,"count":7},{"name":"交通出行","icon":"🚄","color":"#0c8599","desc":"机场值机安检转机、火车地铁公交、出租车、自驾租车、问路、交通投诉与索赔","id":2,"count":6},{"name":"住宿","icon":"🏨","color":"#7048e8","desc":"预订确认、入住登记、房型设施、解决问题、早餐寄存延迟退房、退房评价、特殊要求与投诉升级","id":3,"count":7},{"name":"餐饮美食","icon":"🍽️","color":"#e8590c","desc":"找餐厅订位、看菜单、点餐忌口过敏、问当地特色、结账小费、市场咖啡馆酒吧、地道俚语与饮食文化","id":4,"count":7},{"name":"游览与文化","icon":"🗺️","color":"#2f9e44","desc":"景点门票、博物馆遗迹、音乐会歌剧爵士、城市漫步、自然风景、购物市场、节庆礼仪、深度文化导览","id":5,"count":8},{"name":"人际交流","icon":"💬","color":"#c2255c","desc":"打招呼寒暄、向当地人求助、询问建议、结识旅伴、表达情绪感谢、拒绝道歉澄清、深度闲聊与委婉幽默","id":6,"count":7},{"name":"安全与突发","icon":"🆘","color":"#e03131","desc":"身体不适药店医院、丢失证件财物、迷路报警、改签延误退款、酒店订单问题、紧急求助、正式报案与保险理赔","id":7,"count":7},{"name":"叙述与复盘","icon":"✍️","color":"#4263eb","desc":"描述过去旅行、过程顺序、感受、比较、推荐避雷、游记日记明信片、规划下次、观点假设与遗憾","id":8,"count":8},{"name":"艺术与音乐","icon":"🎭","color":"#9c36b5","desc":"博物馆美术馆、描述作品、买演出票、座位节目单、爵士俱乐部、讨论演出、弗拉门戈古典爵士、推荐艺术之城、深度艺术评论","id":9,"count":9}];
+const CARDS = [{"id":0,"t":1,"name":"选择目的地","lv":"A2","v":[["el destino","目的地"],["viajar","旅行"],["las vacaciones","假期"],["soñar con","梦想；向往"],["la playa","海滩"],["la guía de viaje","旅行指南"],["la montaña","山；山区"],["la ciudad histórica","历史名城"]],"p":[["¿A dónde te gustaría viajar?","你想去哪里旅行？"],["Me gustaría visitar {España}.","我想去西班牙。"],["Mi destino soñado es {Japón}.","我梦想的目的地是日本。"],["¿Qué lugar me recomiendas?","你推荐我去什么地方？"],["Tengo ganas de playa y descanso.","我想去海滩放松休息。"],["Oye, ¿nos vamos de viaje este verano?","嘿，咱们夏天去旅行吧？","c"]],"mission":["用西语确定一个旅行目的地并说明理由",["说出想去的国家或城市","说明理由：海滩、美食或文化","向对方征求一个推荐"]],"swaps":[["国家城市","España","México","Argentina","Perú"],["理由","por las playas","por la comida","por la cultura"],["时间","este verano","el próximo mes","en Semana Santa"]],"out":["录30秒：说出3个想去的目的地和理由","写5句：用 Me gustaría... porque... 列目的地清单",["Me gustaría viajar a {España} porque...","¿Qué lugar me recomiendas para...?"]]},{"id":1,"t":1,"name":"时间、季节与天气","lv":"A2","v":[["la época","时节；季节"],["la temporada baja","淡季"],["la temporada alta","旺季"],["hacer buen tiempo","天气好"],["llover","下雨"],["el clima","气候"],["hacer calor","天热"],["nevar","下雪"]],"p":[["¿Qué tiempo hace en {octubre}?","十月份天气怎么样？"],["En {verano} hace mucho calor.","夏天很热。"],["¿Cuál es la mejor época para viajar?","最佳旅行时节是什么时候？"],["Viajo en temporada baja, hay menos gente.","我淡季出行，人更少。"],["En invierno nieva mucho en la sierra.","冬天山区经常下雪。"],["¡Qué día más bueno hace para pasear!","今天天儿真好，正适合散步！","c"]],"mission":["询问目的地的季节天气，并确定出行月份",["询问最佳旅行时节","描述热、冷、多雨或下雪","说出你的出行月份"]],"swaps":[["季节","primavera","verano","otoño","invierno"],["天气","hace sol","llueve mucho","hace frío"],["月份","marzo","julio","octubre","diciembre"]],"out":["录30秒：比较两个季节的天气","写5句：描述目的地四季天气",["¿Qué tiempo hace en {octubre}?","En {verano} hace mucho...","la mejor época es..."]]},{"id":2,"t":1,"name":"行程与预算","lv":"B1","v":[["el presupuesto","预算"],["el itinerario","行程"],["ahorrar","节省；存钱"],["gastar","花费"],["barato","便宜的"],["caro","贵的"],["la tarifa","价格；费率"],["incluir","包含"]],"p":[["Tengo un presupuesto de {mil euros}.","我有1000欧元的预算。"],["¿Cuánto cuesta el viaje?","这趟旅行要花多少钱？"],["Quiero un plan económico.","我想要一个经济的方案。"],["Este vuelo es más barato que el directo.","这班飞机比直飞便宜。"],["¿El precio incluye el desayuno?","这个价格含早餐吗？"],["Nos sale por unos 300 euros por persona.","算下来每人大约300欧元。","c"]],"mission":["做一份旅行预算，并比较两种方案的价格",["说明总预算金额","逐项询问机票、酒店等花费","选择更划算的方案"]],"swaps":[["预算","500 euros","1.000 euros","2.000 dólares"],["花费项","el vuelo","el hotel","la comida","las actividades"],["省钱方式","un albergue","un vuelo con escala","cocinar en el alojamiento"]],"out":["录30秒：报出你的预算分配","写5句：列出5项花费及金额",["Tengo un presupuesto de {mil euros}.","¿cuánto cuesta...?","nos sale por... por persona"]]},{"id":3,"t":1,"name":"订机票、车票与酒店","lv":"A2","v":[["reservar","预订"],["el billete de avión","机票"],["ida y vuelta","往返"],["el alojamiento","住宿"],["la disponibilidad","空房；余票"],["confirmar la reserva","确认预订"],["la escala","转机；经停"],["el asiento","座位"]],"p":[["Quiero reservar un vuelo a {Madrid}.","我想订一张去马德里的机票。"],["¿Solo ida o ida y vuelta?","单程还是往返？"],["¿Hay habitaciones disponibles para {el cinco de mayo}?","5月5日有空房吗？"],["Me gustaría confirmar mi reserva.","我想确认我的预订。"],["¿Me puede dar un asiento de pasillo?","能给我一个靠走道的座位吗？"],["¿Llevas el billete en el móvil?","你手机里存好票了吗？","c"]],"mission":["完成一次“机票 + 酒店”的预订",["报出目的地和日期","选择单程或往返","确认座位、房型与价格"]],"swaps":[["日期","el 3 de junio","del 10 al 15 de julio","este fin de semana"],["舱位房型","clase turista","habitación individual","habitación doble"],["座位","ventanilla","pasillo","sin preferencia"]],"out":["录30秒：机票加酒店预订对话","写5句：写下你的预订信息",["Quiero reservar... para...","¿Hay... disponibles?","la reserva está a nombre de..."]]},{"id":4,"t":1,"name":"签证、护照与保险","lv":"B1","v":[["el visado","签证"],["el pasaporte","护照"],["la embajada","大使馆"],["el seguro de viaje","旅行保险"],["la vigencia","有效期"],["el consulado","领事馆"],["el certificado","证明"],["el sello de entrada","入境章"]],"p":[["Necesito un visado para entrar en {el espacio Schengen}.","我进入申根区需要签证。"],["Mi pasaporte tiene una vigencia de seis meses.","我的护照有效期为六个月。"],["¿Qué documentos piden para el visado?","签证需要哪些材料？"],["Tengo seguro médico de viaje.","我有旅行医疗保险。"],["¿Dónde ponen el sello de entrada?","入境章在哪里盖？"],["No se olvide del certificado de vacunación.","请别忘了疫苗接种证明。"]],"mission":["说明签证材料，并核对证件有效期",["说明目的地是否需要签证","列出三项申请材料","确认护照有效期、保险和入境章"]],"swaps":[["证件","el pasaporte","el visado de turista","el certificado de vacunación"],["材料","la foto carnet","la reserva del hotel","el billete de vuelta"],["有效期","tres meses","seis meses","diez años"]],"out":["录30秒：说明签证办理流程","写5句：列一份出行证件清单",["Necesito un visado para...","¿qué documentos piden para...?","no se olvide de..."]]},{"id":5,"t":1,"name":"行李与出发准备","lv":"A2","v":[["hacer la maleta","收拾行李"],["la maleta de mano","登机箱"],["el equipaje facturado","托运行李"],["la lista","清单"],["no olvidar","别忘了"],["el cargador","充电器"],["el adaptador","转换插头"],["el neceser","洗漱包"]],"p":[["¿Qué debo meter en la maleta?","我该往箱子里装些什么？"],["No olvides el pasaporte.","别忘了护照。"],["Llevo ropa para el frío.","我带了御寒的衣服。"],["Hago la maleta la noche anterior.","我头天晚上收拾行李。"],["Los líquidos de mano deben ir en una bolsa.","随身液体要放在透明袋里。"],["¡Que no se te olvide el cargador!","可千万别忘带充电器！","c"]],"mission":["根据目的地天气列行李清单并互相检查",["根据天气选择衣物","放入证件、充电器和药品","核对随身液体100毫升规定"]],"swaps":[["衣物","una chaqueta","el bañador","unas zapatillas","el paraguas"],["必备品","el pasaporte","el cargador","el adaptador","las medicinas"],["包","la maleta de mano","la mochila","la maleta facturada"]],"out":["录30秒：念出你的行李清单","写5句：用“我带了……/别忘了……”写清单",["No olvides {el pasaporte}.","¿qué debo meter en la maleta?","llevo... en la maleta"]]},{"id":6,"t":1,"name":"比价、改签谈判与预订投诉","lv":"B2","v":[["la tarifa reembolsable","可退票价"],["modificar la reserva","修改预订"],["el suplemento","附加费"],["la reclamación","投诉；索赔"],["la letra pequeña","小字条款"],["el comprobante","凭证"],["la compensación","补偿"],["hacer valer mis derechos","维护我的权益"]],"p":[["Quisiera modificar la fecha de mi reserva, si es posible.","如果可以的话，我想更改预订日期。"],["¿La tarifa es reembolsable en caso de cancelación?","这个票价取消时可以退款吗？"],["Me cobran un suplemento que no figuraba en la reserva.","他们向我收取一笔预订时没有的附加费。"],["¿Podría indicarme qué dice la letra pequeña?","您能告诉我小字条款是怎么规定的吗？"],["Quiero presentar una reclamación formal y necesito el comprobante por escrito.","我要正式投诉，并需要书面凭证。"],["Mire, reservé en estas condiciones y tengo el correo que lo demuestra.","您看，我是按这些条件预订的，我有邮件为证。"]],"mission":["处理一次预订纠纷，争取改签或退款",["说明原预订条件","指出收费或条款问题","出示确认邮件等凭证","提出改签、退款或补偿方案","要求书面凭证并记录工号"]],"swaps":[["纠纷类型","cancelación","cambio de fecha","equipaje extra","denegación de embarque"],["诉求","la devolución","el cambio gratuito","una compensación","una noche de hotel"],["凭证","el correo de confirmación","el número de reserva","el justificante de pago"]],"out":["录40秒：向客服说明纠纷并提出诉求","写5句：正式投诉要点",["Quisiera modificar...","según mi reserva...","exijo una solución por escrito"]]},{"id":7,"t":2,"name":"机场：值机、安检、登机、转机、行李","lv":"A2","v":[["facturar","托运（行李）"],["la tarjeta de embarque","登机牌"],["el control de seguridad","安检"],["la puerta de embarque","登机口"],["la escala","转机；经停"],["la cinta de equipajes","行李转盘"],["el exceso de equipaje","行李超重"],["el retraso","延误"]],"p":[["¿Dónde se factura para el vuelo {IB320}?","IB320航班在哪里值机？"],["Tengo escala en {Madrid}.","我在马德里转机。"],["¿De qué puerta salimos?","我们在哪个登机口登机？"],["Mi maleta no aparece en la cinta.","我的行李没出现在转盘上。"],["¿Cuál es el límite del equipaje de mano?","手提行李的限额是多少？"],["¡Mira, ya están embarcando!","你看，已经开始登机啦！","c"]],"mission":["走完“值机—安检—登机—转机—取行李”全流程",["出示护照办理托运","过安检时取出电脑和液体","确认登机口并按时登机","转机问路，行李丢失时登记"]],"swaps":[["航班号","IB320","AA863","LA801"],["座位","ventanilla","pasillo"],["转机城市","Madrid","Bogotá","Ciudad de México"]],"out":["录30秒：用西语复述机场全流程","写5句：记录你的机场流程步骤",["¿Dónde está la puerta {B12}?","tengo escala en {Madrid}","facturo una maleta"]]},{"id":8,"t":2,"name":"火车、地铁与公交","lv":"A2","v":[["el billete sencillo","单程票"],["el andén","站台"],["el transbordo","换乘"],["el horario","时刻表"],["la parada","车站"],["el abono","交通卡；月票"],["la línea","线路"],["la máquina expendedora","售票机"]],"p":[["¿A qué hora sale el próximo tren para {Sevilla}?","下一班去塞维利亚的火车几点开？"],["¿Este metro va al centro?","这班地铁到市中心吗？"],["¿Dónde hago transbordo?","我在哪里换乘？"],["Un billete de ida y vuelta, por favor.","请给我一张往返票。"],["¿Qué línea va al aeropuerto?","几号线去机场？"],["Oye, ¿me dices dónde me bajo, porfa?","嘿，能告诉我哪站下吗？","c"]],"mission":["买票并按照时刻表完成一次换乘",["说出目的地并买票","询问发车时间和站台","确认换乘车站和线路"]],"swaps":[["票种","sencillo","ida y vuelta","abono de diez viajes"],["目的地","el aeropuerto","el centro","la estación de Atocha"],["时刻","a las ocho","cada diez minutos","el último tren"]],"out":["录30秒：购票与问路对话","写5句：写下你的乘车路线",["¿A qué hora sale...?","¿dónde hago transbordo?","un billete para..."]]},{"id":9,"t":2,"name":"出租车与网约车","lv":"A1","v":[["el taxi","出租车"],["el taxímetro","计价器"],["la dirección","地址"],["la parada de taxis","出租车站"],["tardar","花费（时间）"],["parar","停车"],["todo derecho","一直往前"],["la tarifa","车费"]],"p":[["¿Me lleva a {este hotel}, por favor?","请送我去这家酒店好吗？"],["Ponga el taxímetro, por favor.","请打表。"],["¿Cuánto se tarda al aeropuerto?","去机场要多长时间？"],["Párese aquí, por favor.","请在这里停车。"],["Siga todo derecho hasta la plaza.","一直往前开到广场。"],["¿Cuánto es? Aquí tiene, muchas gracias.","多少钱？给您，谢谢。","c"]],"mission":["完成“上车报地址—确认打表—到达付款”",["把酒店地址给司机","要求打表并询问大概时间","到达时说停车并付款"]],"swaps":[["地点","el aeropuerto","la estación","el centro histórico"],["支付","en efectivo","con tarjeta","con la aplicación"],["时长","unos veinte minutos","un cuarto de hora"]],"out":["录30秒：出租车乘车对话","写5句：写下乘车指令",["¿Me lleva a...?","¿cuánto se tarda en llegar?","párese aquí, por favor"]]},{"id":10,"t":2,"name":"自驾与租车","lv":"B1","v":[["alquilar un coche","租车"],["el permiso de conducir","驾照"],["la gasolina","汽油"],["llenar el depósito","加满油箱"],["aparcar","停车"],["la autopista","高速公路"],["el peaje","过路费"],["la multa","罚单"]],"p":[["Quiero alquilar un coche para {tres días}.","我想租一辆车用三天。"],["¿Está incluido el seguro a todo riesgo?","含全险吗？"],["Llene el depósito, por favor.","请加满油。"],["¿Dónde puedo aparcar cerca del hotel?","酒店附近哪里可以停车？"],["¿Esta autopista tiene peaje?","这条高速公路收费吗？"],["Pásame el navegador, que me he desviado.","把导航给我，我开错路了。","c"]],"mission":["完成租车取车、加油、停车和还车",["出示驾照并选择车型","确认保险、过路费和还车时间","途中加油、停车"]],"swaps":[["车型","pequeño","automático","familiar"],["时长","dos días","una semana"],["燃油","gasolina","diésel","eléctrico"]],"out":["录30秒：租车柜台对话","写5句：写下你的自驾安排",["Quiero alquilar un coche para...","¿está incluido el seguro?","llene el depósito"]]},{"id":11,"t":2,"name":"问路与确认方向","lv":"A1","v":[["derecha","右边"],["izquierda","左边"],["todo recto","直走"],["la esquina","街角；路口"],["cerca","近的"],["lejos","远的"],["el mapa","地图"],["el semáforo","红绿灯"]],"p":[["¿Dónde está {la estación}?","车站在哪里？"],["Gire a la derecha en la esquina.","在路口右转。"],["¿Está cerca de aquí?","离这里近吗？"],["Me he perdido.","我迷路了。"],["Siga todo recto hasta el semáforo.","一直走到红绿灯。"],["Perdone, ¿por dónde se sale a la calle Mayor?","劳驾，去马约尔大街怎么走？","c"]],"mission":["问路并按照指引到达目的地",["说出要找的地点","听懂左拐、右拐、直走","重复一遍确认方向"]],"swaps":[["地点","el banco","el hotel","el museo","la parada de autobús"],["方位","a la derecha","a la izquierda","enfrente","al lado"],["距离","cinco minutos","dos cuadras","muy cerca"]],"out":["录30秒：问路对话","写5句：写下指路指令",["¿Por dónde se va a...?","siga todo recto","gire a la..."]]},{"id":12,"t":2,"name":"交通投诉与突发索赔","lv":"B2","v":[["la hoja de reclamaciones","投诉表"],["el justificante","证明"],["denunciar","举报；报案"],["el taxista pirata","黑车司机"],["cobrar de más","多收费"],["la compañía aérea","航空公司"],["la asistencia","援助"],["el transporte alternativo","替代交通"]],"p":[["El taxista no puso el taxímetro y me cobró el doble.","出租车司机没打表，收了我双倍车费。"],["Quiero poner una reclamación y la hoja correspondiente.","我要投诉，请给我相应的投诉表。"],["Por el retraso del vuelo, ¿a qué asistencia tengo derecho?","航班延误，我有权获得哪些援助？"],["Necesito un justificante del retraso para el seguro.","我需要一份延误证明给保险公司。"],["Me negaron el embarque aunque tenía la reserva confirmada.","我虽有确认预订，却被拒绝登机。"],["Exijo transporte alternativo o la devolución íntegra del billete.","我要求安排替代交通，或全额退票。"]],"mission":["投诉黑车多收费或航班拒载，并争取赔偿",["客观说明事实经过","引用打表、援助或退款等权利","要求投诉表和书面证明","提出替代交通或赔偿方案"]],"swaps":[["问题","sin taxímetro","cobró de más","me negó el embarque","se perdió la maleta"],["权利","la hoja de reclamaciones","el justificante","la compensación"],["对象","el taxista","la aerolínea","la estación","el seguro"]],"out":["录40秒：一段交通投诉陈述","写5句：投诉事实与诉求",["Quiero poner una reclamación","tengo derecho a...","exijo... por escrito"]]},{"id":13,"t":3,"name":"预订与确认信息","lv":"A2","v":[["la reserva","预订"],["la habitación doble","双人间"],["la habitación individual","单人间"],["la noche","晚；夜"],["el número de reserva","预订号"],["la confirmación","确认函"],["la recepción","前台"],["la fecha de llegada","入住日期"]],"p":[["Tengo una reserva a nombre de {García}.","我有加西亚名下的预订。"],["He reservado una habitación doble para {dos noches}.","我订了一间双人间，住两晚。"],["¿Puede confirmarme la reserva?","您能帮我确认预订吗？"],["Le envío el correo de confirmación.","我把确认邮件发给您。"],["Mi número de reserva es el {4521}.","我的预订号是4521。"],["Oye, ¿ya tenemos hotel para esas fechas?","嘿，那几天的酒店订好了吗？","c"]],"mission":["确认酒店预订信息（姓名、房型、日期、晚数）",["报出预订姓名和预订号","确认房型、入住日期和晚数","出示确认邮件"]],"swaps":[["房型","individual","doble","con cama de matrimonio"],["晚数","una noche","dos noches","tres noches"],["餐食","solo alojamiento","con desayuno","media pensión"]],"out":["录30秒：电话确认预订","写5句：写下你的预订信息",["Tengo una reserva a nombre de...","he reservado... para... noches","mi número de reserva es..."]]},{"id":14,"t":3,"name":"入住登记","lv":"A1","v":[["la reserva","预订"],["la habitación","房间"],["la llave","钥匙；房卡"],["el pasaporte","护照"],["el desayuno","早餐"],["el ascensor","电梯"],["la recepción","前台"],["el check-in","入住登记"]],"p":[["Tengo una reserva a nombre de {García}.","我有加西亚名下的预订。"],["Quisiera hacer el check-in.","我想办理入住。"],["¿A qué hora se sirve el desayuno?","早餐几点供应？"],["¿Podría guardar mi equipaje?","可以帮我寄存行李吗？"],["Aquí tiene mi pasaporte.","这是我的护照。"],["¿Me da la llave de la habitación, porfa?","请把房卡给我好吗？","c"]],"mission":["完成一次“入住 + 询问早餐时间 + 寄存行李”的对话",["报出预订姓名并办理入住","出示护照、领取房卡","询问早餐时间和电梯位置","请前台寄存行李"]],"swaps":[["姓名","García","López","Martínez","Rodríguez"],["日期","el 12 de mayo","del 3 al 7 de junio"],["房型","individual","doble","con vistas al mar"]],"out":["录30秒：入住登记对话","写5句：旅行小日记，记录入住过程",["Tengo una reserva a nombre de...","¿a qué hora se sirve...?","¿podría guardar mi equipaje?"]]},{"id":15,"t":3,"name":"房型、设施与服务","lv":"A2","v":[["la habitación con vistas","景观房"],["el aire acondicionado","空调"],["la caja fuerte","保险箱"],["el wifi","无线网络"],["la piscina","游泳池"],["la planta baja","一楼；底层"],["la toalla","毛巾"],["el secador","吹风机"]],"p":[["¿Tiene wifi la habitación?","房间有无线网络吗？"],["¿Cuál es la contraseña del wifi?","无线网络密码是多少？"],["Quisiera una habitación con vistas.","我想要一间景观房。"],["El aire acondicionado no funciona.","空调坏了。"],["¿La piscina está abierta hasta qué hora?","游泳池开放到几点？"],["¿Me suben una toalla más, que no hay?","能再送条毛巾上来吗，房间没有。","c"]],"mission":["确认房型与设施，并报修一个故障",["说明想要的房型和楼层","询问无线网络、泳池等设施","报告空调或保险箱故障"]],"swaps":[["设施","wifi","piscina","gimnasio","parking"],["楼层","planta baja","tercera planta","última planta"],["问题","no funciona","no hay agua caliente","no abre la caja fuerte"]],"out":["录30秒：向前台报修","写5句：描述房间设施",["¿Tiene... la habitación?","¿cuál es la contraseña de...?","el aire no funciona"]]},{"id":16,"t":3,"name":"解决问题：噪音、空调、Wi-Fi、房卡","lv":"B1","v":[["la avería","故障"],["hacer ruido","发出噪音"],["desmagnetizar","消磁"],["la tarjeta de la habitación","房卡"],["el mantenimiento","维修"],["el ruido","噪音"],["cambiar de habitación","换房"],["urgente","紧急的"]],"p":[["La tarjeta no abre la puerta, se ha desmagnetizado.","房卡开不了门，消磁了。"],["Hay mucho ruido en la habitación de al lado.","隔壁房间很吵。"],["¿Podría enviar a mantenimiento?","能派维修人员来吗？"],["No funciona el wifi desde anoche.","无线网络从昨晚起就不能用。"],["Si no se soluciona, ¿podríamos cambiar de habitación?","如果修不好，我们能换房吗？"],["Oiga, que aquí no se puede dormir nada.","喂，这房间根本没法睡啊。","c"]],"mission":["电话或到前台解决房间问题",["说明具体故障和房间号","提出维修或换房要求","确认处理时间并复述"]],"swaps":[["故障","la tarjeta","el aire","el wifi","la ducha"],["诉求","reparar","cambiar de habitación","otra tarjeta"],["时间","ahora mismo","en diez minutos","esta noche"]],"out":["录30秒：报修对话","写5句：记录问题与处理结果",["No funciona... en la habitación...","¿podría enviar a mantenimiento?","si no se soluciona..."]]},{"id":17,"t":3,"name":"早餐、寄存行李与延迟退房","lv":"A2","v":[["el desayuno buffet","自助早餐"],["la consigna","行李寄存处"],["guardar el equipaje","寄存行李"],["la hora de salida","退房时间"],["la salida tardía","延迟退房"],["incluido","包含的"],["el comedor","餐厅"],["el café con leche","牛奶咖啡"]],"p":[["¿El desayuno está incluido?","早餐包含在内吗？"],["¿A qué hora es la salida?","几点退房？"],["Quisiera dejar las maletas en consigna.","我想把行李寄存在寄存处。"],["¿Es posible una salida tardía?","可以延迟退房吗？"],["El desayuno se sirve de siete a diez.","早餐七点到十点供应。"],["¿Me guardáis las maletas hasta las tres?","能帮我把行李存到三点吗？","c"]],"mission":["安排早餐、行李寄存和延迟退房",["确认早餐是否含、时间和地点","请求寄存行李并说明取件时间","申请延迟退房"]],"swaps":[["早餐","de siete a diez","en el comedor","buffet"],["退房","a las once","a las doce","salida tardía"],["取行李","a mediodía","a las tres","por la tarde"]],"out":["录30秒：前台请求对话","写5句：写下退房安排",["¿A qué hora es la salida?","¿puedo dejar las maletas en...?","¿es posible una salida tardía?"]]},{"id":18,"t":3,"name":"退房与评价","lv":"A2","v":[["hacer el check-out","办理退房"],["la factura","账单；发票"],["el cargo","收费项目"],["la minibar","迷你吧"],["la devolución del depósito","退还押金"],["la reseña","评价"],["la llave","房卡"],["el pago","付款"]],"p":[["Quisiera hacer el check-out.","我想办理退房。"],["¿Me prepara la factura, por favor?","请给我结账好吗？"],["No reconozco este cargo de la minibar.","我不认可这笔迷你吧收费。"],["Aquí tiene las llaves.","房卡还给您。"],["Dejaré una reseña muy positiva.","我会写一条很好的评价。"],["¿Me cobráis ya, que tengo prisa por el avión?","能现在结账吗，我赶飞机。","c"]],"mission":["核对账单、退房并留下评价",["归还房卡并要求结账","逐项核对收费项目","说明入住体验并写评价"]],"swaps":[["账单","la habitación","la minibar","el parking"],["支付","en efectivo","con tarjeta","con el depósito"],["评价","muy buena","regular","no la recomiendo"]],"out":["录30秒：退房对话","写5句：写一段酒店评价",["Quisiera hacer el check-out","no reconozco este cargo","dejaré una reseña..."]]},{"id":19,"t":3,"name":"特殊要求与投诉升级","lv":"C1","v":[["la habitación contigua","相邻房"],["la cuna","婴儿床"],["la hoja de reclamaciones","投诉表"],["la dirección","管理层"],["el cambio de habitación","换房"],["la noche gratis","免单一晚"],["la insonorización","隔音"],["la compensación","补偿"]],"p":[["Reservé una habitación doble y me han dado una individual.","我订的是双人间，却给了我单人间。"],["La habitación no está insonorizada y no he podido dormir en toda la noche.","房间不隔音，我整夜没能入睡。"],["Exijo un cambio inmediato o una solución equivalente.","我要求立即换房或提供同等解决方案。"],["Si no se resuelve, presentaré una reclamación ante la dirección.","若不解决，我将向管理层正式投诉。"],["¿Podría facilitarnos una cuna y dos habitaciones contiguas?","能否提供一张婴儿床和两间相邻房？"],["Espero alguna compensación, como una noche gratis o el desayuno incluido.","我希望得到补偿，例如免一晚房费或含早餐。"]],"mission":["处理严重住宿问题并完成投诉升级",["核对预订与实际不符之处","说明问题造成的影响","要求立即换房或补救","提出补偿并要求投诉表","要求联系经理并记录工号"]],"swaps":[["问题","ruido","sin agua caliente","aire roto","cama sucia"],["诉求","cambio de habitación","noche gratis","reembolso","hoja de reclamaciones"],["特殊需求","una cuna","planta alta","llegada tardía"]],"out":["录45秒：一段投诉升级对话","写6句：正式投诉信要点",["Exijo un cambio inmediato","presentaré una reclamación ante...","espero una compensación"]]},{"id":20,"t":4,"name":"找餐厅、订位与等位","lv":"A1","v":[["el restaurante","餐厅"],["reservar una mesa","订位"],["para dos personas","两人位"],["la carta","菜单"],["la espera","等位"],["la terraza","露天座"],["libre","空着的"],["la lista de espera","等位名单"]],"p":[["Una mesa para {dos}, por favor.","请给我一张两人桌。"],["¿Tiene mesa para esta noche?","今晚有空桌吗？"],["¿Cuánto es la espera?","要等多久？"],["Quisiera reservar para las {nueve}.","我想订九点的位子。"],["Preferimos una mesa en la terraza.","我们想要露天座位。"],["¿Nos ponen para cuatro, porfa?","能给我们安排四人桌吗？","c"]],"mission":["完成“找餐厅—订位—等位入座”",["说明用餐人数","预订时间或询问等位","选择露天座还是室内"]],"swaps":[["人数","dos","cuatro","una persona"],["时间","las ocho","las nueve y media","al mediodía"],["座位","dentro","en la terraza","junto a la ventana"]],"out":["录30秒：餐厅订位对话","写5句：写下你理想餐厅的要求",["Una mesa para {dos}","¿tiene mesa para...?","¿cuánto es la espera?"]]},{"id":21,"t":4,"name":"看菜单与理解菜品","lv":"A2","v":[["el menú del día","当日套餐"],["el primer plato","头盘"],["el segundo plato","主菜"],["el postre","甜点"],["la bebida","饮料"],["el entrante","前菜"],["la ración","大份（tapas）"],["ser vegetariano","是素食者"]],"p":[["¿Nos trae la carta, por favor?","请给我们菜单好吗？"],["¿Qué lleva este plato?","这道菜里有什么？"],["¿Cuál es el menú del día?","当日套餐是什么？"],["De primero, {la sopa}; de segundo, {el pescado}.","头盘要汤，主菜要鱼。"],["¿Tienen opciones vegetarianas?","有素食选项吗？"],["Oye, ¿esto pica mucho?","嘿，这个很辣吗？","c"]],"mission":["看懂菜单并点一套头盘、主菜、甜点",["询问当日套餐和菜品配料","按头盘、主菜、甜点点菜","说明素食需求"]],"swaps":[["套餐","menú del día","a la carta","menú infantil"],["菜品","la sopa","la ensalada","la carne","el pescado"],["口味","picante","salado","dulce","sin gluten"]],"out":["录30秒：点菜对话","写5句：写下你想点的套餐",["De primero... y de segundo...","¿qué lleva este plato?","¿tienen opciones...?"]]},{"id":22,"t":4,"name":"点餐、忌口与过敏说明","lv":"B1","v":[["pedir","点（餐）"],["la alergia","过敏"],["los frutos secos","坚果"],["el gluten","麸质"],["sin","不含"],["el marisco","海鲜"],["la intolerancia a la lactosa","乳糖不耐"],["tomar nota","记单点餐"]],"p":[["¿Me puede recomendar un plato típico?","您能推荐一道当地菜吗？"],["Soy alérgico a {los frutos secos}.","我对坚果过敏。"],["¿Este plato lleva {gluten}?","这道菜含麸质吗？"],["¿Lo pueden preparar sin sal?","可以做得不加盐吗？"],["Una ración de jamón para compartir.","来一份火腿大家分。"],["¡Oiga, cuando pueda nos toma nota!","服务员，方便时帮我们点单！","c"]],"mission":["点餐并清楚说明过敏与忌口",["说明过敏或不耐受的食材","逐道确认菜品配料","提出少油、少盐等做法要求"]],"swaps":[["过敏","frutos secos","marisco","lácteos","huevo"],["忌口","sin gluten","sin sal","vegetariano","vegano"],["做法","a la plancha","hervido","al horno"]],"out":["录30秒：含过敏说明的点餐","写5句：写下你的忌口要求",["Soy alérgico a...","¿este plato lleva...?","¿lo pueden preparar sin...?"]]},{"id":23,"t":4,"name":"询问推荐和当地特色","lv":"A2","v":[["la especialidad de la casa","招牌菜"],["probar","品尝"],["típico","当地的；典型的"],["el plato estrella","招牌菜"],["casero","家常的"],["de temporada","时令的"],["la tapa","小食；塔帕斯"],["la zona","这一带"]],"p":[["¿Cuál es la especialidad de la casa?","店里的招牌菜是什么？"],["¿Qué plato típico me recomienda?","您推荐哪道当地菜？"],["Quiero probar algo de la zona.","我想尝尝当地特色。"],["¿Qué hay de postre típico?","有什么当地特色甜点？"],["¿Esto es de temporada?","这是时令的吗？"],["¿Lo de siempre? — Sí, lo de siempre, por favor.","还是老样子吗？——对，老样子。","c"]],"mission":["请服务员推荐当地特色并点菜",["询问招牌菜和时令菜","点一份当地小食分享","确认推荐理由"]],"swaps":[["特色","paella","tortilla","ceviche","tacos al pastor"],["小食","una tapa","una ración","media ración"],["甜点","flan","churros","helado","fruta"]],"out":["录30秒：询问推荐对话","写5句：写下你想尝的当地菜",["¿Cuál es la especialidad...?","quiero probar algo de...","¿qué hay de postre...?"]]},{"id":24,"t":4,"name":"结账、小费与评价","lv":"A2","v":[["la cuenta","账单"],["pagar","付款"],["la propina","小费"],["en efectivo","用现金"],["con tarjeta","刷卡"],["el servicio","服务费"],["el ticket","小票"],["invitar","请客"]],"p":[["La cuenta, por favor.","请结账。"],["¿Puedo pagar con tarjeta?","我可以刷卡吗？"],["¿Está incluido el servicio?","含服务费吗？"],["La propina va aparte.","小费另算。"],["Invito yo.","我请客。"],["¿Nos cobras cuando puedas?","方便时给我们结一下账好吗？","c"]],"mission":["核对账单、付款、留小费并评价",["要求结账并核对项目","选择现金或刷卡","询问服务费并决定小费"]],"swaps":[["支付","en efectivo","con tarjeta","por aplicación"],["小费","el 10%","dejar propina","redondear"],["账单","por separado","junto","con servicio incluido"]],"out":["录30秒：结账对话","写5句：写一段餐厅评价",["La cuenta, por favor","¿puedo pagar con...?","la propina va aparte"]]},{"id":25,"t":4,"name":"市场、咖啡馆、酒吧与街头小吃","lv":"A1","v":[["el café con leche","牛奶咖啡"],["la barra","吧台"],["el pincho","小串；小食"],["el mercado","市场"],["el puesto","摊位"],["para llevar","外带"],["el bocadillo","三明治"],["el churro con chocolate","油条配热巧克力"]],"p":[["Un café con leche, por favor.","请给我一杯牛奶咖啡。"],["¿Me pone un pincho de tortilla?","给我一份土豆饼小食好吗？"],["Para tomar aquí.","在这里吃。"],["Para llevar, por favor.","请打包。"],["¿Cuánto vale un churro con chocolate?","一份油条配热巧克力多少钱？"],["¡Oye, uno de calamares en la barra!","嘿，吧台来一份鱿鱼圈！","c"]],"mission":["在市场、咖啡馆和酒吧点单",["在吧台点咖啡和小食","说明堂食还是外带","在摊位询问价格"]],"swaps":[["咖啡","solo","con leche","cortado","descafeinado"],["小食","pincho de tortilla","patatas bravas","bocadillo de jamón"],["方式","aquí","para llevar","en la barra"]],"out":["录30秒：咖啡馆点单","写5句：写下你最爱的早餐搭配",["Un café con leche","¿me pone un...?","para tomar aquí / para llevar"]]},{"id":26,"t":4,"name":"地道俚语点餐与饮食文化","lv":"C1","v":[["el punto de la carne","肉的熟度"],["la media ración","半份"],["el chupito","小杯烈酒"],["el maridaje","配酒"],["el menú degustación","品鉴菜单"],["el aperitivo","开胃酒时段"],["para chuparse los dedos","好吃到舔手指"],["por separado","分开（结账）"]],"p":[["¿Me pone la carne al punto, poco hecha por dentro?","肉给我做五分熟，里面嫩一点好吗？"],["¿Nos hace una media ración para ir abriendo boca?","给我们来半份先垫垫好吗？"],["Este jamón está para chuparse los dedos.","这火腿好吃到舔手指。"],["¿Qué vino marida mejor con el pescado?","什么酒配鱼最合适？"],["En España, con el aperitivo suelen poner una tapa gratis.","在西班牙，点开胃酒时常送一份免费小食。"],["¿Me pone la cuenta pero por separado, por favor?","请给我们分开结账好吗？"]],"mission":["用地道表达完成一次完整用餐并讨论饮食文化",["用本土说法点单和点半份","说明肉的熟度与忌口","询问配酒和品鉴菜单","理解tapa、aperitivo文化","要求分开结账"]],"swaps":[["熟度","poco hecha","al punto","muy hecha"],["点单俚语","¿me pone...?","uno de...","una media ración","para compartir"],["文化","la tapa gratis","el aperitivo","el maridaje","el menú del día"]],"out":["录45秒：完整点餐（熟度、配酒、分开结账）","写6句：介绍tapas文化与一次用餐经历",["¿Me pone... al punto?","está para chuparse los dedos","la cuenta por separado"]]},{"id":27,"t":5,"name":"景点、门票与开放时间","lv":"A2","v":[["la entrada","门票"],["la taquilla","售票处"],["el descuento","折扣"],["el carnet de estudiante","学生证"],["gratuito","免费的"],["el horario","开放时间"],["cerrado","关闭的"],["la visita guiada","导览参观"]],"p":[["¿Cuánto cuesta la entrada?","门票多少钱？"],["¿Hay descuento para estudiantes?","学生有折扣吗？"],["¿A qué hora cierran?","几点关门？"],["Dos entradas, por favor.","请给我两张票。"],["Los domingos la entrada es gratuita.","周日免费开放。"],["¿Saco las entradas por internet o en taquilla?","票在网上买还是售票处买？","c"]],"mission":["购票并确认开放时间和优惠",["询问门票价格","出示学生证等优惠证件","确认开放、闭馆时间"]],"swaps":[["票种","adulto","estudiante","niño","grupo"],["时间","de nueve a seis","cierra los lunes","última entrada a las cinco"],["购票","por internet","en taquilla","anticipada"]],"out":["录30秒：售票处购票对话","写5句：写下景点开放信息",["¿Cuánto cuesta la entrada?","¿hay descuento para...?","¿a qué hora cierran?"]]},{"id":28,"t":5,"name":"博物馆、美术馆与历史遗迹","lv":"A2","v":[["el museo","博物馆"],["la exposición","展览"],["la obra","作品"],["prohibido hacer fotos","禁止拍照"],["el guardia","保安"],["la sala","展厅"],["el folleto","手册"],["la audioguía","语音导览"]],"p":[["¿Dónde está la exposición de {Goya}?","戈雅作品展在哪里？"],["¿Se puede hacer fotos?","可以拍照吗？"],["¿Tienen folleto en español?","有西班牙语手册吗？"],["No se pueden tocar las obras.","展品不可触摸。"],["¿Cuánto se tarda en verlo?","参观完要多久？"],["Oye, ¿la audioguía entra con la entrada?","嘿，语音导览含在票里吗？","c"]],"mission":["参观博物馆并遵守参观规则",["询问展览位置和语言服务","确认拍照、触摸等规定","租用语音导览"]],"swaps":[["展品","pintura","escultura","restos romanos"],["服务","audioguía","folleto","taquilla","consigna"],["规定","sin fotos","en silencio","no tocar"]],"out":["录30秒：博物馆问询对话","写5句：记录参观规则",["¿Dónde está la exposición de...?","¿se puede hacer fotos?","no se puede..."]]},{"id":29,"t":5,"name":"音乐厅、歌剧、爵士俱乐部与音乐节","lv":"B1","v":[["el concierto","音乐会"],["la ópera","歌剧"],["la butaca","座位"],["el programa","节目单"],["el festival","音乐节"],["el jazz","爵士乐"],["el entretiempo","中场休息"],["la taquilla","售票处"]],"p":[["¿Quedan entradas para el concierto de esta noche?","今晚的音乐会还有票吗？"],["¿A qué hora empieza la ópera?","歌剧几点开始？"],["¿Dónde está mi butaca?","我的座位在哪里？"],["¿Hay descuento para el festival?","音乐节有折扣吗？"],["En el entretiempo tomamos algo.","中场休息时我们喝点东西。"],["¿Está agotado o quedan algunas de pie?","是卖光了还是有站票？","c"]],"mission":["购买演出票并确认时间、座位和节目单",["询问余票和折扣","确认开场时间与座位","了解中场休息安排"]],"swaps":[["演出","ópera","concierto de jazz","festival","flamenco"],["座位","platea","palco","de pie"],["时间","a las ocho","el sábado","dos funciones"]],"out":["录30秒：购票对话","写5句：写下你想看的演出",["¿Quedan entradas para...?","¿a qué hora empieza...?","¿dónde está mi butaca?"]]},{"id":30,"t":5,"name":"城市漫步、建筑与街区","lv":"A2","v":[["el casco antiguo","老城区"],["la plaza","广场"],["la catedral","大教堂"],["el barrio","街区"],["pasear","散步"],["la arquitectura","建筑"],["el mirador","观景台"],["la calle peatonal","步行街"]],"p":[["¿Qué hay que ver en el casco antiguo?","老城区有什么必看的？"],["Vamos a pasear por el barrio gótico.","我们去哥特区走走。"],["¿Desde dónde hay las mejores vistas?","哪里视野最好？"],["Esta arquitectura es impresionante.","这建筑令人印象深刻。"],["¿Se llega al mirador a pie?","走路能到观景台吗？"],["¿Te apetece perdernos un rato por las calles?","要不要随便逛会儿街？","c"]],"mission":["规划一次老城步行路线",["询问必看广场和建筑","安排观景台和步行街","描述沿途建筑风格"]],"swaps":[["地点","la plaza mayor","la catedral","el barrio antiguo","el mirador"],["风格","gótico","modernista","colonial","barroco"],["方式","a pie","en bici","con el mapa"]],"out":["录30秒：推荐一条步行路线","写5句：描述你住的街区",["¿Qué hay que ver en...?","vamos a pasear por...","las mejores vistas están en..."]]},{"id":31,"t":5,"name":"自然风景：山、海、森林、公园","lv":"A2","v":[["la ruta de senderismo","徒步路线"],["el parque nacional","国家公园"],["la cascada","瀑布"],["el lago","湖泊"],["la cima","山顶"],["el paisaje","风景"],["el sendero","小路"],["calzado cómodo","舒适的鞋"]],"p":[["¿Qué ruta de senderismo me recomienda?","您推荐哪条徒步路线？"],["¿Cuánto se tarda en subir a la cima?","爬到山顶要多久？"],["Hay unas vistas increíbles desde el mirador.","观景台风景绝佳。"],["¿Es una ruta difícil para niños?","这条路线对孩子难吗？"],["¿Se puede bañar en el lago?","可以在湖里游泳吗？"],["¡Qué pasada de paisaje, parece una postal!","这风景绝了，像明信片一样！","c"]],"mission":["选择徒步路线并了解难度与装备",["询问推荐路线和耗时","确认难度、是否适合孩子","准备鞋、水和防晒"]],"swaps":[["地貌","la montaña","la playa","el bosque","el desierto"],["难度","fácil","media","difícil"],["装备","botas","agua","protector solar","chubasquero"]],"out":["录30秒：询问徒步路线","写5句：描述一处自然风景",["¿Qué ruta me recomienda?","¿cuánto se tarda en...?","hay unas vistas..."]]},{"id":32,"t":5,"name":"购物、纪念品与当地市场","lv":"A2","v":[["el recuerdo","纪念品"],["el regalo","礼物"],["el mercado de artesanía","手工艺品市场"],["probarse","试穿"],["la talla","尺码"],["la rebaja","打折"],["regatear","砍价"],["hecho a mano","手工的"]],"p":[["¿Cuánto cuesta este recuerdo?","这个纪念品多少钱？"],["¿Me lo puedo probar?","我可以试穿吗？"],["¿Tiene otra talla?","有别的尺码吗？"],["¿Me hace un descuento si compro dos?","买两个能打折吗？"],["¿Dónde está el mercado de artesanía?","手工艺品市场在哪里？"],["Perdone, ¿esto es hecho a mano o de fábrica?","请问这是手工的还是工厂货？","c"]],"mission":["在市场挑选纪念品并尝试砍价",["询问价格和产地","试穿并询问尺码","多件购买时请求折扣"]],"swaps":[["纪念品","un imán","una cerámica","un pañuelo","una joya"],["尺码","pequeña","mediana","grande"],["支付","efectivo","tarjeta","rebajas"]],"out":["录30秒：市场购物砍价","写5句：写下购物清单和预算",["¿Cuánto cuesta...?","¿me hace un descuento...?","¿tiene otra talla?"]]},{"id":33,"t":5,"name":"节庆、习俗与文化礼仪","lv":"B1","v":[["la fiesta","节日"],["el desfile","游行"],["los fuegos artificiales","烟花"],["la costumbre","习俗"],["el horario","作息时间"],["la puntualidad","守时"],["el saludo","问候方式"],["la educación","礼貌"]],"p":[["¿Qué fiestas hay durante mi visita?","我来的这段时间有什么节日？"],["¿A qué hora empieza el desfile?","游行几点开始？"],["En España se cena muy tarde, ¿verdad?","在西班牙晚饭吃得很晚，对吧？"],["¿Es costumbre dar propina?","有给小费的习惯吗？"],["¿Cómo se saluda aquí, con dos besos?","这里怎么打招呼，贴面礼两次吗？"],["¿Queda mal llegar muy puntual a una cena?","聚餐到得太准时会不合适吗？","c"]],"mission":["了解当地节庆、作息和社交礼仪",["询问节日和游行时间","了解用餐、小费等习惯","确认问候、守时等礼仪"]],"swaps":[["节庆","Semana Santa","los sanfermines","el Día de Muertos"],["礼仪","dos besos","un apretón de manos","propina"],["作息","comer a las dos","cenar a las nueve","la siesta"]],"out":["录30秒：询问当地习俗","写5句：对比中外一个习俗",["¿Es costumbre...?","¿cómo se saluda aquí?","en mi país..., en cambio aquí..."]]},{"id":34,"t":5,"name":"深度文化导览讲解","lv":"B2","v":[["el estilo gótico","哥特式风格"],["el estilo mudéjar","穆德哈尔式"],["el patrimonio mundial","世界遗产"],["la época colonial","殖民时期"],["la obra cumbre","代表作"],["la restauración","修复"],["el guía oficial","官方导游"],["la audioguía en español","西语语音导览"]],"p":[["¿De qué época es este edificio?","这座建筑是什么时期的？"],["Me gustaría una visita guiada en español.","我想要一个西班牙语导览。"],["Esta catedral mezcla el estilo gótico y el mudéjar.","这座大教堂融合了哥特式与穆德哈尔式。"],["¿Cuánto duró la restauración del casco antiguo?","老城区的修复持续了多久？"],["Es patrimonio mundial desde {1984}.","它自1984年起被列为世界遗产。"],["¿Podría explicarnos el significado histórico de este cuadro?","您能讲讲这幅画的历史意义吗？"]],"mission":["参加一次西语深度导览并讨论历史文化",["预约西语官方导览","询问建筑年代与艺术风格","就作品或遗迹提问","讨论本土与殖民文化影响","表达自己的观点"]],"swaps":[["风格","gótico","mudéjar","barroco","modernista","colonial"],["场所","la catedral","el acueducto","el casco antiguo","las ruinas"],["服务","la visita guiada","el folleto","la audioguía","el taller"]],"out":["录45秒：向导游提三个历史文化问题","写6句：介绍一处世界遗产",["¿De qué época es...?","mezcla el estilo...","es patrimonio mundial desde..."]]},{"id":35,"t":6,"name":"打招呼、自我介绍与寒暄","lv":"A1","v":[["¡hola!","你好"],["buenos días","早上好"],["buenas tardes","下午好"],["buenas noches","晚上好"],["¿qué tal?","你好吗"],["mucho gusto","很高兴认识你"],["¿de dónde eres?","你是哪里人"],["presentarse","自我介绍"]],"p":[["¡Hola! ¿Qué tal?","你好！最近怎么样？"],["Mucho gusto, me llamo {Ana}.","很高兴认识你，我叫安娜。"],["¿De dónde eres?","你是哪里人？"],["Encantado de conocerle.","很高兴认识您。"],["¿Cómo se llama usted?","您怎么称呼？"],["¡Buenas! ¿Qué hay por aquí?","嗨！这附近有啥好玩的？","c"]],"mission":["完成一次从打招呼到自我介绍的寒暄",["按时段问好","介绍自己的名字和国籍","反问对方并礼貌告别"]],"swaps":[["名字","Ana","Lucía","Carlos","Mateo"],["国籍","de China","de Japón","de Corea"],["时段","buenos días","buenas tardes","buenas noches"]],"out":["录30秒：自我介绍","写5句：向新认识的朋友介绍自己",["Me llamo... y soy de...","mucho gusto","¿y tú, de dónde eres?"]]},{"id":36,"t":6,"name":"向当地人求助","lv":"A1","v":[["ayudar","帮助"],["por favor","请；麻烦"],["perdone","劳驾"],["¿me puede ayudar?","能帮我吗"],["perderse","迷路"],["buscar","寻找"],["la dirección","地址"],["amable","友善的"]],"p":[["Perdone, ¿me puede ayudar?","劳驾，能帮我一下吗？"],["Me he perdido.","我迷路了。"],["¿Sabe dónde está {la estación}?","您知道车站在哪里吗？"],["Necesito ayuda, por favor.","我需要帮助，麻烦您。"],["Muchas gracias, muy amable.","非常感谢，您真好。"],["Oiga, ¿me echa una mano con esto?","嘿，能帮我搭把手吗？","c"]],"mission":["礼貌地向当地人求助并道谢",["用打扰语开场","说明迷路或要找的地方","复述方向并感谢"]],"swaps":[["求助对象","un policía","un dependiente","un camarero"],["地点","el baño","la estación","el hospital"],["感谢","muchas gracias","muy amable","se lo agradezco"]],"out":["录30秒：街头求助对话","写5句：写下求助的话",["Perdone, ¿me puede ayudar?","¿sabe dónde está...?","muchas gracias, muy amable"]]},{"id":37,"t":6,"name":"询问建议与推荐","lv":"A2","v":[["aconsejar","建议"],["recomendar","推荐"],["merecer la pena","值得"],["según usted","依您看"],["la zona","这一带"],["mejor","最好"],["evitar","避开"],["el sitio local","本地人去的地方"]],"p":[["¿Qué me recomienda visitar?","您推荐我参观什么？"],["¿Merece la pena entrar?","值得进去看看吗？"],["¿Qué no me puedo perder?","有什么不能错过的？"],["¿Hay algún sitio que deba evitar?","有什么地方应该避开吗？"],["¿Dónde comen los locales?","本地人都在哪儿吃饭？"],["Tú, ¿qué harías en mi lugar?","换作是你，你会怎么办？","c"]],"mission":["向当地人征求景点和餐厅建议",["询问必看景点和本地餐厅","确认是否值得去","请对方避开游客陷阱"]],"swaps":[["推荐","un museo","un mirador","un bar de tapas"],["评价","merece la pena","es muy turístico","es auténtico"],["时间","por la mañana","al atardecer","entre semana"]],"out":["录30秒：征求建议对话","写5句：整理一份推荐清单",["¿Qué me recomienda...?","¿merece la pena...?","¿dónde comen los locales?"]]},{"id":38,"t":6,"name":"结识旅伴、分享计划","lv":"A2","v":[["viajar solo","独自旅行"],["conocer gente","认识朋友"],["el compañero de viaje","旅伴"],["compartir","分享；分摊"],["unirse","加入"],["los planes","计划"],["la excursión","短途游"],["quedar","约见"]],"p":[["¿Viajas solo?","你一个人旅行吗？"],["¿Te apetece visitar el museo juntos?","想不想一起去博物馆？"],["Podemos compartir un taxi.","我们可以拼一辆出租车。"],["¿Cuáles son tus planes para mañana?","你明天有什么计划？"],["Me apunto a la excursión.","我报名参加短途游。"],["¿Quedamos para desayunar y lo vemos?","明早一起吃早饭再定怎么样？","c"]],"mission":["认识旅伴并协调一次共同出行",["询问对方是否独自旅行","提出一起参观或拼车","约定时间和集合地点"]],"swaps":[["活动","el museo","la excursión","la playa","la ruta"],["分摊","un taxi","la gasolina","la habitación"],["集合","a las nueve","en el vestíbulo","junto a la entrada"]],"out":["录30秒：邀请旅伴同行","写5句：给旅伴的行程建议",["¿Te apetece... juntos?","podemos compartir...","¿quedamos a las...?"]]},{"id":39,"t":6,"name":"表达喜欢、惊喜、失望与感谢","lv":"A2","v":[["¡qué bien!","太好了"],["me encanta","我很喜欢"],["¡qué sorpresa!","好惊喜"],["¡qué decepción!","好失望"],["agradecer","感谢"],["el detalle","心意"],["de nada","不客气"],["¡guay!","太棒了"]],"p":[["¡Me encanta este lugar!","我太喜欢这个地方了！"],["Muchas gracias por todo.","非常感谢你所做的一切。"],["¡Qué sorpresa tan bonita!","真是个美好的惊喜！"],["Qué decepción, está cerrado.","好失望，关门了。"],["Le agradezco mucho su ayuda.","非常感谢您的帮助。"],["¡Guau, qué vistas más chulas!","哇，这风景也太赞了吧！","c"]],"mission":["用西语表达四种情绪并真诚感谢",["表达喜欢和惊喜","表达失望并说明原因","为具体的心意道谢"]],"swaps":[["情绪正面","me encanta","¡qué bien!","¡guau!"],["情绪负面","qué decepción","una lástima","esperaba más"],["感谢","gracias por todo","muy amable","le agradezco"]],"out":["录30秒：表达四种情绪","写5句：一张感谢明信片",["¡Me encanta...!","muchas gracias por...","qué decepción que..."]]},{"id":40,"t":6,"name":"礼貌拒绝、道歉与澄清误会","lv":"B1","v":[["disculparse","道歉"],["el perdón","原谅；抱歉"],["no poder","不能"],["aclarar","澄清"],["el malentendido","误会"],["molestar","打扰"],["educadamente","礼貌地"],["rechazar","拒绝"]],"p":[["Perdón, no era mi intención.","对不起，我不是故意的。"],["Creo que hay un malentendido.","我想这里有个误会。"],["Me temo que no puedo.","恐怕我不能。"],["Disculpe, ¿puede repetirlo?","抱歉，您能重复一遍吗？"],["No se preocupe, no pasa nada.","别担心，没关系。"],["Lo siento, pero esto no es lo que pedí.","不好意思，这不是我点的东西。","c"]],"mission":["礼貌拒绝、道歉并澄清一次误会",["为失误道歉","说明误会出在哪里","委婉拒绝不合理要求"]],"swaps":[["道歉","perdón","lo siento","fue sin querer"],["拒绝","me temo que no","otra vez será","no puedo"],["澄清","no era mi intención","quería decir...","hay un malentendido"]],"out":["录30秒：道歉与澄清对话","写5句：一次误会的说明",["Creo que hay un malentendido","no era mi intención","me temo que no puedo"]]},{"id":41,"t":6,"name":"深度闲聊、委婉表达与幽默","lv":"C1","v":[["romper el hielo","破冰"],["el doble sentido","双关"],["sobreentenderse","心照不宣"],["dar largas","敷衍拖延"],["quedar bien","留下好印象"],["la ironía","反讽"],["el tuteo","用tú相称"],["el usted","您（敬称）"]],"p":[["En España se tutea casi desde el primer momento, mientras que en muchos países de Latinoamérica se prefiere el «usted».","在西班牙几乎一上来就用tú，而许多拉美国家更习惯用usted。"],["¿Nos tuteamos, por favor?","我们用tú相称好吗？"],["Es un plan interesante, aunque lo pensaré con calma.","计划挺有意思，不过我会从容考虑一下。"],["La verdad, no me convence del todo.","说实话，我不完全认可。"],["¿Te suena lo que digo o me estoy explicando mal?","你明白我的意思吗，还是我没说清楚？"],["Cuéntame más, que esto se pone interesante.","再讲讲，这事儿越来越有意思了。"]],"mission":["与当地人进行一次有深度的礼貌社交",["破冰寒暄并确认tú或usted","委婉表达不同意见","澄清双关或误会","用幽默接话","得体结束并约定再见"]],"swaps":[["称呼","tú","usted","vos"],["委婉","lo pensaré","no me convence del todo","quizás otro día","me temo que no"],["地区口语","¿qué onda?","¿qué cuentas?","chévere","guay","padre"]],"out":["录45秒：含一次委婉拒绝的闲聊","写6句：对比西班牙与拉美问候表达",["¿Nos tuteamos?","no me convence del todo","cuéntame más"]]},{"id":42,"t":7,"name":"身体不适、药店与医院","lv":"B1","v":[["encontrarse mal","不舒服"],["la farmacia","药店"],["el dolor de cabeza","头痛"],["la fiebre","发烧"],["el médico","医生"],["la receta","处方"],["urgencias","急诊"],["el síntoma","症状"]],"p":[["Me encuentro mal, me duele {la cabeza}.","我不舒服，头疼。"],["¿Dónde hay una farmacia de guardia?","哪里有24小时药店？"],["¿Tiene algo para la fiebre?","有退烧药吗？"],["Necesito ver a un médico.","我需要看医生。"],["¿Es necesario ir a urgencias?","需要去急诊吗？"],["¿Esto se vende sin receta o hace falta una?","这是非处方药还是需要处方？","c"]],"mission":["描述症状、买药或就医",["说明哪里不舒服和持续时间","在药店说明症状买药","必要时前往急诊并出示保险"]],"swaps":[["症状","dolor de cabeza","fiebre","náuseas","tos"],["药品","analgésico","jarabe","curitas","antiséptico"],["地点","farmacia de guardia","centro de salud","urgencias"]],"out":["录30秒：向医生描述症状","写5句：记录症状和用药",["Me duele... desde hace...","¿tiene algo para...?","necesito ver a un médico"]]},{"id":43,"t":7,"name":"丢失护照、钱包或行李","lv":"B1","v":[["perder","丢失"],["robar","偷窃"],["la cartera","钱包"],["denunciar","报案"],["la embajada","大使馆"],["el documento","证件"],["cancelar la tarjeta","挂失银行卡"],["objetos perdidos","失物招领"]],"p":[["He perdido el pasaporte.","我把护照弄丢了。"],["Me han robado la cartera.","我的钱包被偷了。"],["¿Dónde está la comisaría?","警察局在哪里？"],["Tengo que cancelar las tarjetas.","我得挂失银行卡。"],["¿Hay objetos perdidos en el aeropuerto?","机场有失物招领处吗？"],["¿Me toma nota de la denuncia, por favor?","请帮我做报案记录好吗？","c"]],"mission":["挂失、报案并补办证件",["说明丢失或被盗的物品","前往警察局报案","联系银行和大使馆"]],"swaps":[["物品","el pasaporte","el móvil","la cartera","la maleta"],["地点","en el metro","en el hotel","en la playa"],["手续","denunciar","cancelar la tarjeta","sacar un salvoconducto"]],"out":["录30秒：报失对话","写5句：记录挂失补办步骤",["He perdido...","me han robado...","¿dónde está la comisaría?"]]},{"id":44,"t":7,"name":"迷路与联系警察","lv":"B1","v":[["la comisaría","警察局"],["el policía","警察"],["pedir ayuda","求助"],["la zona peligrosa","危险区域"],["mantenerse a salvo","保证安全"],["el número de emergencia","紧急电话"],["la ubicación","位置"],["seguir las indicaciones","按指示做"]],"p":[["¿Me acompaña a un lugar seguro?","您能陪我到一个安全的地方吗？"],["Llame al número de emergencia, por favor.","请拨打紧急电话。"],["No sé dónde estoy.","我不知道自己在哪里。"],["¿Esta zona es peligrosa por la noche?","这一带晚上危险吗？"],["Siga las indicaciones del policía.","请按警察的指示做。"],["¿Mande? No encuentro la salida, ¿me ayuda?","请问？我找不到出口，能帮我吗？","c"]],"mission":["迷路时保证安全并联系警察",["说明自己的位置和情况","询问区域是否安全","按警察指示行动"]],"swaps":[["地点","una calle oscura","la estación","el parking"],["电话","112","911","el móvil sin saldo"],["求助","un lugar seguro","la embajada","un taxi de confianza"]],"out":["录30秒：报警求助对话","写5句：写下紧急情况下的步骤",["No sé dónde estoy","¿me acompaña a...?","llame al número de emergencia"]]},{"id":45,"t":7,"name":"改签、航班延误、取消与退款","lv":"B1","v":[["el retraso","延误"],["la cancelación","取消"],["cambiar el billete","改签"],["el reembolso","退款"],["la compensación","赔偿"],["el mostrador","柜台"],["la huelga","罢工"],["el vale de comida","餐券"]],"p":[["Mi vuelo se ha cancelado.","我的航班取消了。"],["¿Cuál es el próximo vuelo disponible?","下一班可乘的航班是哪班？"],["Quiero cambiar mi billete.","我想改签。"],["Solicito el reembolso completo.","我要求全额退款。"],["¿A qué hora embarcamos?","我们几点登机？"],["¿Nos dan vale de comida por el retraso?","航班延误给餐券吗？","c"]],"mission":["处理延误或取消，完成改签或退款",["确认航班状态和原因","询问下一班或替代交通","提出退款、赔偿或餐食"]],"swaps":[["状态","retrasado","cancelado","desviado"],["方案","cambiar el billete","reembolso","hotel pagado"],["原因","la huelga","el tiempo","un problema técnico"]],"out":["录30秒：柜台改签对话","写5句：记录改签处理结果",["Mi vuelo se ha...","¿cuál es el próximo...?","solicito el reembolso..."]]},{"id":46,"t":7,"name":"酒店或订单问题","lv":"B1","v":[["la reserva confirmada","已确认预订"],["el overbooking","超售"],["la solución","解决方案"],["el hotel alternativo","替代酒店"],["el cargo indebido","错误扣款"],["el encargado","负责人"],["el correo de confirmación","确认邮件"],["la devolución","退款"]],"p":[["Tengo una reserva confirmada.","我有已确认的预订。"],["Su sistema dice que no hay habitaciones.","你们的系统显示没有房间了。"],["Exijo una solución: otro hotel o la devolución.","我要求解决：换酒店或退款。"],["Me han cobrado dos veces.","他们向我重复扣款了。"],["Aquí está el correo de confirmación.","这是确认邮件。"],["¿Quién es el encargado? Quiero hablar con él.","谁是负责人？我要和他谈。","c"]],"mission":["处理超售、无房或错误扣款",["出示确认预订凭证","说明问题并要求方案","找负责人并要求退款"]],"swaps":[["问题","overbooking","cargo doble","habitación no reservada"],["方案","otro hotel","la devolución","una mejora"],["凭证","correo de confirmación","número de reserva","justificante"]],"out":["录30秒：订单投诉对话","写5句：记录问题和处理方案",["Tengo una reserva confirmada","exijo una solución","me han cobrado..."]]},{"id":47,"t":7,"name":"紧急求助与重要信息说明","lv":"B1","v":[["¡socorro!","救命！"],["la emergencia","紧急情况"],["la ambulancia","救护车"],["los bomberos","消防员"],["la policía","警察"],["herido","受伤的"],["el incendio","火灾"],["la dirección exacta","准确地址"]],"p":[["¡Socorro! ¡Llamen a una ambulancia!","救命！请叫救护车！"],["Hay una persona herida.","有一个人受伤了。"],["¿Cuál es el número de emergencia?","紧急电话是多少？"],["Se ha producido un incendio.","发生火灾了。"],["Estoy en {la calle Mayor}, número {12}.","我在马约尔大街12号。"],["¡Rápido, que alguien llame a la policía!","快，谁赶紧报警！","c"]],"mission":["拨打紧急电话并说清关键信息",["说明紧急类型","报出准确地址和人数","说明伤者情况"]],"swaps":[["紧急","una ambulancia","los bomberos","la policía"],["伤情","herido","inconsciente","no respira"],["地址","calle","número","piso","punto de referencia"]],"out":["录30秒：紧急电话陈述","写5句：写下个人紧急信息",["¡Llamen a...!","estoy en... número...","hay una persona..."]]},{"id":48,"t":7,"name":"正式报案与保险理赔","lv":"B2","v":[["la denuncia","报案记录"],["presentar una denuncia","报案"],["la comisaría","警察局"],["el número de póliza","保单号"],["el parte médico","医疗报告"],["el robo","抢劫；盗窃"],["el formulario de reclamación","理赔表"],["la copia","副本"]],"p":[["Quiero presentar una denuncia por robo.","我要报一起盗窃案。"],["Me robaron la cartera con el pasaporte y las tarjetas.","我的钱包连同护照和银行卡被偷了。"],["Necesito una copia de la denuncia para el seguro.","我需要一份报案记录副本给保险公司。"],["¿Dónde está la comisaría más cercana?","最近的警察局在哪里？"],["Tengo que dar parte al seguro; mi póliza es la número {4521}.","我要向保险报案，我的保单号是4521。"],["El médico me entregó un parte médico con el diagnóstico.","医生给了我一份写明诊断的医疗报告。"]],"mission":["完成报案并向保险公司申请理赔",["到警察局说明被盗经过","列出失物清单和价值","取得报案记录副本","联系保险并报保单号","提交理赔表和医疗报告"]],"swaps":[["案件","robo","hurto","pérdida","accidente"],["物品","el pasaporte","la cartera","el móvil","la maleta"],["材料","la denuncia","el parte médico","la póliza","las facturas"]],"out":["录45秒：一段报案陈述","写6句：保险理赔陈述",["Quiero presentar una denuncia","necesito una copia para el seguro","mi número de póliza es..."]]},{"id":49,"t":8,"name":"描述过去的旅行","lv":"B1","v":[["el año pasado","去年"],["fui","我去了"],["visité","我参观了"],["me quedé","我停留"],["conocer","初次到访；认识"],["pasar unos días","待几天"],["inolvidable","难忘的"],["saber a poco","意犹未尽"]],"p":[["El año pasado fui a {México}.","去年我去了墨西哥。"],["Visité {tres ciudades}.","我游览了三座城市。"],["Me quedé en {un hostal}.","我住在一家青年旅舍。"],["Fue un viaje inolvidable.","那是一次难忘的旅行。"],["Conocí a mucha gente interesante.","我认识了很多有趣的人。"],["Estuve una semana y me supo a poco.","我待了一周，还觉得没待够。","c"]],"mission":["用过去时讲述一次完整旅行",["说明时间、目的地和天数","描述住宿和到访地点","说出一两个难忘片段"]],"swaps":[["时间","el mes pasado","en julio","hace dos años"],["地点","México","Perú","Argentina","España"],["住宿","un hostal","un hotel","una casa particular"]],"out":["录30秒：讲述上一次旅行","写5句：一段旅行回忆",["El año pasado fui a...","me quedé en...","fue un viaje..."]]},{"id":50,"t":8,"name":"描述过程：先、然后、最后","lv":"B1","v":[["primero","首先"],["luego","然后"],["después","之后"],["más tarde","稍后"],["finalmente","最后"],["antes de","在……之前"],["al llegar","到达时"],["mientras","当……时"]],"p":[["Primero, llegamos al hotel y dejamos las maletas.","首先我们到酒店放下行李。"],["Luego, salimos a pasear por el centro.","然后我们去市中心散步。"],["Después de cenar, fuimos a un espectáculo de flamenco.","晚饭后我们去看了弗拉门戈表演。"],["Finalmente, volvimos cansados pero felices.","最后我们累并快乐地回去了。"],["Mientras visitábamos el museo, empezó a llover.","我们参观博物馆时下起了雨。"],["Y entre unas cosas y otras, se nos hizo de noche.","七弄八弄，不知不觉天就黑了。","c"]],"mission":["按时间顺序复述一天的行程",["用首先、然后、最后连接","加入到达时和途中的细节","描述一天结束时的状态"]],"swaps":[["顺序","primero","luego","después","finalmente"],["活动","dejar las maletas","pasear","cenar","ver un espectáculo"],["时间","al llegar","por la tarde","por la noche"]],"out":["录30秒：复述一天行程","写5句：按顺序写旅行日记",["Primero... luego... finalmente...","mientras..., empezó a...","después de..."]]},{"id":51,"t":8,"name":"描述感受：有趣、疲惫、惊艳、遗憾","lv":"B1","v":[["increíble","不可思议的"],["agotador","累人的"],["impresionante","震撼的"],["decepcionante","令人失望的"],["acogedor","温馨的"],["la experiencia","体验"],["sentirse","感觉"],["quedarse con las ganas","意犹未尽"]],"p":[["Fue una experiencia increíble.","那是一次绝妙的体验。"],["Me sentí muy cómodo en el hostal.","我在旅舍感觉很自在。"],["El paisaje era impresionante.","风景令人震撼。"],["Me decepcionó que el museo estuviera cerrado.","博物馆关门让我很失望。"],["Estaba agotado pero feliz.","我累并快乐着。"],["Me quedé con las ganas de volver.","我意犹未尽，还想再来。","c"]],"mission":["描述旅行中的四种真实感受",["说出惊艳和喜欢的瞬间","描述疲惫或失望","表达温馨和意犹未尽"]],"swaps":[["正面","increíble","impresionante","acogedor","genial"],["负面","agotador","decepcionante","masificado","caro"],["搭配","me sentí...","me sorprendió...","me decepcionó que..."]],"out":["录30秒：描述旅行心情变化","写5句：记录最高兴和最遗憾的事",["Fue una experiencia...","me decepcionó que...","estaba... pero..."]]},{"id":52,"t":8,"name":"比较地点、食物、交通与文化","lv":"B1","v":[["más... que","比……更"],["menos... que","不如……"],["tan... como","和……一样"],["mejor que","比……好"],["peor que","比……差"],["parecido a","与……相似"],["mientras que","而"],["no hay color","没得比"]],"p":[["La comida es más picante que en China.","这里的菜比中国菜辣。"],["El transporte es menos caro que en Europa.","这里的交通比欧洲便宜。"],["La playa es tan bonita como en las fotos.","海滩和照片里一样美。"],["Prefiero el norte, mientras que mi amigo prefiere el sur.","我更喜欢北方，而我朋友更喜欢南方。"],["En comparación, {Lima} es más moderna.","相比之下，利马更现代。"],["No hay color, esto es mucho mejor.","没得比，这个好多了。","c"]],"mission":["对两个目的地进行多方面比较",["比较物价、交通和食物","使用同级、比较级和最高级","给出个人偏好和理由"]],"swaps":[["对象","la comida","el transporte","la gente","el clima"],["程度","más barato","tan rápido","menos masificado"],["观点","prefiero","me gusta más","no hay color"]],"out":["录30秒：比较两座城市","写5句：中外旅行对比",["... es más... que...","tan... como...","prefiero... mientras que..."]]},{"id":53,"t":8,"name":"推荐或不推荐一个地方","lv":"B1","v":[["recomendar","推荐"],["no recomendar","不推荐"],["merecer la pena","值得"],["evitar","避开"],["la estafa","宰客；骗局"],["la hora punta","高峰时段"],["sin falta","务必"],["te la clavan","宰你没商量"]],"p":[["Te recomiendo probar el jamón.","我推荐你尝尝火腿。"],["No recomiendo ir en agosto, hace demasiado calor.","我不建议八月去，太热了。"],["Merece mucho la pena madrugar para evitar colas.","为避开排队早起非常值得。"],["Evita los restaurantes de la plaza, son caros.","避开广场上的餐厅，很贵。"],["Sin falta, visita el mirador al atardecer.","务必在日落时去观景台。"],["Olvídate del taxi ahí, te la clavan.","那儿别打车，宰你没商量。","c"]],"mission":["给出带理由的推荐与避雷清单",["推荐三样必做的事","提醒两个要避开的坑","说明最佳时间和理由"]],"swaps":[["推荐","probar","visitar","madrugar","reservar"],["避雷","la hora punta","los restaurantes turísticos","la estafa"],["时间","al atardecer","entre semana","temprano"]],"out":["录30秒：推荐一个目的地","写5句：旅行避雷小贴士",["Te recomiendo...","no recomiendo... porque...","merece la pena..."]]},{"id":54,"t":8,"name":"写游记、日记、评价与明信片","lv":"B1","v":[["querido/a","亲爱的"],["te escribo desde","我从……给你写信"],["te extraño","想你"],["saludos","问候"],["la postal","明信片"],["el diario","日记"],["te cuento","跟你说"],["tirado","瘫着"]],"p":[["Querida María: te escribo desde {Barcelona}.","亲爱的玛丽亚：我在巴塞罗那给你写信。"],["Te cuento que hoy visité la Sagrada Familia.","跟你说，我今天参观了圣家堂。"],["Hace mucho sol y la gente es muy amable.","这里阳光很好，人们也很友善。"],["Te extraño, pero lo estoy pasando genial.","想你，但我玩得很开心。"],["Muchos saludos a todos.","代我向大家问好。"],["Aquí, tirado en la playa, sin hacer nada.","在这儿瘫在沙滩上，啥也不干。","c"]],"mission":["写一张明信片和一段旅行日记",["用明信片格式问候","记录当天一件事和天气","结尾送上问候"]],"swaps":[["称呼","querida María","queridos todos","hola familia"],["内容","hace sol","lo paso genial","visité..."],["结尾","besos","saludos","te extraño"]],"out":["录30秒：朗读明信片","写5句：一张旅行明信片",["Te escribo desde...","te cuento que...","muchos saludos..."]]},{"id":55,"t":8,"name":"规划下一次旅行","lv":"B1","v":[["la próxima vez","下次"],["volver","再去"],["me gustaría","我想"],["la lista de deseos","愿望清单"],["tener pensado","打算"],["en cuanto","一……就"],["ahorrar para","为……存钱"],["repetir","再来一次"]],"p":[["La próxima vez quiero visitar {el sur}.","下次我想去南方。"],["Me gustaría quedarme más días.","我想多待几天。"],["Tengo pensado volver en primavera.","我打算春天再去。"],["En cuanto pueda, repito el viaje.","一有机会我就故地重游。"],["Estoy ahorrando para el próximo destino.","我正在为下一个目的地存钱。"],["Como pueda, repito el año que viene.","只要能行，我明年还来。","c"]],"mission":["复盘后制定下一次旅行计划",["说出想再去或新去的地方","确定季节和天数","列出存钱和预订计划"]],"swaps":[["目的地","el sur","las islas","otra región"],["季节","en primavera","en otoño","en las vacaciones"],["计划","ahorrar","reservar antes","aprender más español"]],"out":["录30秒：下一次旅行计划","写5句：旅行愿望清单",["La próxima vez quiero...","tengo pensado...","en cuanto pueda..."]]},{"id":56,"t":8,"name":"观点、假设与遗憾：高级复盘","lv":"C1","v":[["la hipótesis","假设"],["el arrepentimiento","遗憾"],["en retrospectiva","回头看"],["de haber sabido","早知道"],["el condicional","条件式"],["el pluscuamperfecto","过去完成时"],["el subjuntivo","虚拟式"],["no cambiaría nada","什么都不愿改变"]],"p":[["Si hubiera sabido que llovía tanto, habría llevado chubasquero.","早知道雨这么大，我就带雨衣了。"],["En retrospectiva, ojalá hubiéramos reservado con más antelación.","回头看，真希望我们当时更早预订。"],["Fue un viaje que, aunque agotador, no cambiaría por nada.","那趟旅行虽累，却是什么都换不走的经历。"],["Me sorprendió que la gente fuera tan acogedora.","让我意外的是，当地人竟如此热情。"],["Si volviera, dedicaría más días a la costa.","如果再去，我会在海边多留几天。"],["Dudo que volvamos en temporada alta por las multitudes.","因为人太多，我怀疑旺季还会再去。"]],"mission":["用复杂时态复盘旅行，表达假设与遗憾",["用过去完成时叙述前因","用条件句说“本会怎样”","用虚拟式表达愿望、惊讶与怀疑","给出反思结论"]],"swaps":[["假设","si hubiera sabido","si volviera","de haber reservado"],["情绪","ojalá...","me sorprendió que...","dudo que...","no cambiaría"],["复盘","en retrospectiva","al final","lo mejor fue..."]],"out":["录45秒：含两句条件句和一句虚拟式的复盘","写6句：深度旅行复盘",["Si hubiera sabido..., habría...","ojalá hubiéramos...","si volviera..."]]},{"id":57,"t":9,"name":"参观博物馆和美术馆","lv":"A2","v":[["el museo de arte","艺术博物馆"],["la colección","馆藏"],["la entrada reducida","优惠票"],["el guía","导游"],["la sala temporal","临时展厅"],["la obra destacada","镇馆之作"],["sin flash","不开闪光灯"],["el guardarropa","衣帽间"]],"p":[["¿Por dónde empieza la colección permanente?","常设馆藏从哪里开始看？"],["¿Hay alguna exposición temporal?","有临时展览吗？"],["Busco la obra más famosa del museo.","我在找馆里最有名的作品。"],["¿Cuánto cuesta la entrada reducida?","优惠票多少钱？"],["¿Se pueden hacer fotos sin flash?","可以不开闪光灯拍照吗？"],["Oye, ¿la obra estrella está en esta planta?","嘿，镇馆之宝在这一层吗？","c"]],"mission":["规划一次美术馆参观并找到重点作品",["询问常设展和临时展","购买优惠票","找到镇馆之作并遵守拍照规定"]],"swaps":[["馆种","museo de arte","museo moderno","galería"],["票","general","reducida","gratuita"],["服务","guardarropa","audioguía","visita guiada"]],"out":["录30秒：博物馆问询","写5句：参观计划",["¿Por dónde empieza...?","busco la obra de...","¿se puede... sin flash?"]]},{"id":58,"t":9,"name":"描述一幅画、建筑或展览","lv":"B1","v":[["el cuadro","画作"],["el autor","作者"],["el retrato","肖像"],["el paisaje","风景画"],["la escultura","雕塑"],["representar","表现；描绘"],["en primer plano","在前景"],["al fondo","在背景处"]],"p":[["Este cuadro es de {Picasso}.","这幅画是毕加索的作品。"],["Representa una escena de la vida cotidiana.","它描绘了一个日常生活场景。"],["En primer plano hay una mujer; al fondo, el mar.","前景是一位女子，背景是大海。"],["¿Qué técnica utilizó el autor?","作者用了什么技法？"],["La escultura es de bronce.","这座雕塑是青铜的。"],["Este cuadro me transmite muchísima calma.","这幅画让我感到特别平静。","c"]],"mission":["用西语描述一件艺术品的内容和技法",["说出作者和作品类型","描述前景、背景和人物","讨论材料与技法"]],"swaps":[["类型","retrato","paisaje","naturaleza muerta","escultura"],["材料","óleo","bronce","mármol","acrílico"],["方位","primer plano","al fondo","a la izquierda"]],"out":["录30秒：描述一幅画","写5句：描述一件你喜欢的作品",["Representa... en primer plano...","al fondo se ve...","¿qué técnica utilizó?"]]},{"id":59,"t":9,"name":"购买音乐会、歌剧或音乐节门票","lv":"B1","v":[["la taquilla","售票处"],["la platea","池座"],["el palco","包厢"],["la localidad","座位票"],["estar agotado","售罄"],["el abono","套票"],["la función","场次"],["juntas","相邻的（座位）"]],"p":[["¿Quedan localidades para {hoy}?","今天还有票吗？"],["¿Cuánto cuesta una butaca en platea?","池座多少钱一个位子？"],["Dos entradas, lo más céntrico posible.","请给我两张票，尽量靠中间。"],["¿Hay descuento de estudiante el día de la función?","演出当天有学生折扣吗？"],["El concierto del sábado está agotado.","周六的音乐会售罄了。"],["¿Me quedan dos juntas, aunque sea arriba?","还有两个连座吗，楼上也行？","c"]],"mission":["在售票处或网上买到合适的演出票",["询问余票和场次","选择池座、包厢或站票","争取相邻座位和折扣"]],"swaps":[["座位","platea","palco","anfiteatro","de pie"],["场次","hoy","mañana","la función de noche"],["票","una entrada","dos juntas","un abono"]],"out":["录30秒：售票处购票","写5句：写下想看的演出和预算",["¿Quedan localidades para...?","dos entradas, lo más... posible","está agotado"]]},{"id":60,"t":9,"name":"询问演出时间、座位与节目单","lv":"B1","v":[["el programa de mano","节目单"],["el acomodador","引座员"],["la fila","排"],["la butaca","座位"],["el entretiempo","中场休息"],["la duración","时长"],["puntual","准时的"],["la puntualidad","准时"]],"p":[["¿Cuál es mi butaca?","我的座位在哪里？"],["¿Cuánto dura la ópera?","歌剧演多长时间？"],["Hay un entretiempo de veinte minutos.","有二十分钟中场休息。"],["¿Me da un programa de mano?","请给我一份节目单好吗？"],["No se puede entrar tarde a la sala.","开场后迟到不能入场。"],["Perdone, ¿la fila doce por aquí o por allá?","请问，12排走这边还是那边？","c"]],"mission":["确认时间、座位、时长和观演礼仪",["请引座员带位并核对排号","询问时长和中场","了解迟到入场规定"]],"swaps":[["座位","fila 12","butaca 8","en el centro"],["时间","a las ocho","dos actos","veinte minutos de descanso"],["礼仪","apagar el móvil","sin fotos","puntual"]],"out":["录30秒：入场问询","写5句：观演注意事项",["¿Cuál es mi butaca?","¿cuánto dura...?","no se puede entrar tarde"]]},{"id":61,"t":9,"name":"在爵士俱乐部订位或点饮料","lv":"A2","v":[["el club de jazz","爵士俱乐部"],["el concierto en directo","现场演出"],["la copa","一杯酒"],["reservar mesa","订桌"],["el músico","乐手"],["el escenario","舞台"],["el set","演出场次"],["la consumición","饮品消费"]],"p":[["Me gustaría asistir a un concierto de jazz esta noche. ¿Sabe si hay algún club cerca de aquí?","我今晚想去听一场爵士音乐会。您知道这附近有没有爵士俱乐部吗？"],["También quiero visitar un museo de arte moderno mañana por la mañana.","我明天上午还想参观一家现代艺术博物馆。"],["¿Hay que reservar mesa?","需要订桌吗？"],["Quisiera una copa de {vino tinto}.","我想要一杯红酒。"],["¿A qué hora empieza el primer set?","第一场几点开始？"],["¿Se puede entrar sin reserva si hay sitio?","没订位，有空桌能进吗？","c"]],"mission":["找到爵士俱乐部、订位并点饮料",["询问附近的爵士俱乐部","确认场次和是否订位","点一杯饮品并看演出"]],"swaps":[["饮品","vino tinto","una cerveza","un cóctel","agua con gas"],["场次","el primer set","el segundo pase","a las diez"],["座位","junto al escenario","en la barra","la mesa de dos"]],"out":["录30秒：俱乐部订位点单","写5句：你的爵士之夜计划",["¿Sabe si hay algún club...?","¿a qué hora empieza...?","quisiera una copa de..."]]},{"id":62,"t":9,"name":"讨论现场演出的感受","lv":"B1","v":[["la ovación","热烈掌声"],["el bis","返场"],["la acústica","音响效果"],["en directo","现场"],["la puesta en escena","舞台呈现"],["emocionante","动人的"],["desafinado","走调的"],["el aplauso","鼓掌"]],"p":[["¡Qué voz tan increíble!","这嗓音太惊人了！"],["La acústica del teatro es perfecta.","剧院的音响效果完美。"],["Me emocionó mucho el segundo movimiento.","第二乐章让我非常感动。"],["Los músicos salieron tres veces a saludar.","乐手们三次出来谢幕。"],["La puesta en escena me pareció muy moderna.","我觉得舞台呈现非常现代。"],["Se notó algún desafín, pero el bis lo arregló todo.","有点走音，但返场全找补回来了。","c"]],"mission":["从演奏、音响和舞台三方面评价演出",["评价演唱或演奏水平","评论音响和舞台","描述返场和观众反应"]],"swaps":[["评价","increíble","emocionante","decepcionante","moderno"],["环节","el primer movimiento","el bis","la ovación final"],["场所","el teatro","el club","el festival al aire libre"]],"out":["录30秒：演出后点评","写5句：一场演出的短评",["Me emocionó...","la acústica...","la puesta en escena me pareció..."]]},{"id":63,"t":9,"name":"介绍弗拉门戈、古典音乐或爵士乐偏好","lv":"B1","v":[["el flamenco","弗拉门戈"],["la guitarra clásica","古典吉他"],["el jazz","爵士乐"],["el compás","节拍"],["el cante","弗拉门戈演唱"],["el bailaor","弗拉门戈舞者"],["la improvisación","即兴"],["el palo","弗拉门戈曲式"]],"p":[["Me apasiona el flamenco, sobre todo las seguiriyas.","我酷爱弗拉门戈，尤其是断续调。"],["¿Dónde hay un buen tablao flamenco?","哪里有好的弗拉门戈表演酒馆？"],["Prefiero el jazz por la improvisación.","我因为即兴而偏爱爵士。"],["La guitarra clásica española exige mucha técnica.","西班牙古典吉他非常考验技法。"],["¿Qué palo flamenco me recomiendas para empezar?","入门你推荐哪种弗拉门戈曲式？"],["El cante hondo me pone la piel de gallina.","深歌听得我直起鸡皮疙瘩。","c"]],"mission":["介绍自己的音乐偏好并询问当地演出",["说出喜欢的音乐类型和理由","询问弗拉门戈或爵士场地","比较古典、爵士与弗拉门戈"]],"swaps":[["类型","flamenco","jazz","música clásica","ópera"],["场所","el tablao","el club","el auditorio"],["元素","el compás","la improvisación","el cante","el baile"]],"out":["录30秒：介绍音乐偏好","写5句：你最爱的音乐类型",["Me apasiona... por...","¿dónde hay un buen...?","prefiero... porque..."]]},{"id":64,"t":9,"name":"推荐一座适合艺术与音乐旅行的城市","lv":"B1","v":[["la capital cultural","文化之都"],["el patrimonio","遗产"],["la escena artística","艺术氛围"],["el barrio bohemio","波西米亚街区"],["la galería","画廊"],["el festival anual","年度音乐节"],["la arquitectura modernista","现代主义建筑"],["inspirador","激发灵感的"]],"p":[["¿Qué ciudad es ideal para amantes del arte?","哪座城市最适合艺术爱好者？"],["Recomiendo {Sevilla} por el flamenco y los museos.","我推荐塞维利亚，因为弗拉门戈和博物馆。"],["Hay galerías y música en directo todos los días.","每天都有画廊和现场音乐。"],["El barrio bohemio está lleno de talleres de artistas.","波西米亚街区满是艺术家工作室。"],["La arquitectura modernista de la ciudad es única.","这座城市的现代主义建筑独一无二。"],["Para empaparte de arte, esta ciudad no tiene igual.","想沉浸在艺术里，这城市无可替代。","c"]],"mission":["推荐一座艺术之城并说明理由",["说出城市和代表艺术","介绍博物馆、画廊和音乐节","描述街区和建筑氛围"]],"swaps":[["城市","Sevilla","Barcelona","Ciudad de México","Buenos Aires"],["亮点","flamenco","museos","arquitectura","festivales"],["场所","el barrio bohemio","la galería","el teatro antiguo"]],"out":["录30秒：推荐一座艺术之城","写5句：艺术之城推荐理由",["Recomiendo... por...","hay... todos los días","la arquitectura es..."]]},{"id":65,"t":9,"name":"深度艺术评论与流派讨论","lv":"C1","v":[["la vanguardia","先锋派"],["el impresionismo","印象派"],["el cubismo","立体主义"],["el surrealismo","超现实主义"],["la composición","构图"],["el claroscuro","明暗对比"],["la obra cumbre","巅峰之作"],["la crítica de arte","艺术评论"]],"p":[["Esta obra refleja la influencia del impresionismo en el uso de la luz.","这幅作品在光线运用上体现了印象派的影响。"],["El cubismo descompone las figuras desde varios puntos de vista.","立体主义从多个视角解构形体。"],["Prefiero la pintura abstracta, aunque reconozco la técnica del realismo.","我更偏爱抽象画，尽管我承认现实主义的技法。"],["¿Qué opinas de la manera en que el autor juega con el claroscuro?","你怎么看作者对明暗对比的运用？"],["La crítica considera esta sinfonía una obra cumbre del romanticismo.","评论界认为这部交响曲是浪漫主义的巅峰之作。"],["No termino de entender el mensaje, pero la composición me parece fascinante.","我没完全读懂它的表达，但构图令我着迷。"]],"mission":["深度讨论一件作品或一场演出并形成评论",["指出流派与技法","分析构图、光影或结构","与另一位艺术家比较","表达个人观点与保留意见","口头或书面写一段短评"]],"swaps":[["流派","impresionismo","cubismo","surrealismo","vanguardia","barroco"],["元素","la composición","el claroscuro","el color","el ritmo","la armonía"],["观点","me fascina","no termino de entenderlo","me parece una obra cumbre","lo sobrevaloran"]],"out":["录45秒：评论一幅画或一场音乐会","写6句：一篇艺术短评",["Refleja la influencia de...","la composición me parece...","en comparación con..."]]}];
+
+/* ============ 密码门 ============ */
+const PASS_HASH='bcba8cef54bd6d21cec0a93787462b2c51556f91fa8dfed9aef874000d556878';
+async function sha256(t){const b=new TextEncoder().encode(t);const h=await crypto.subtle.digest('SHA-256',b);return[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function tryUnlock(){
+ const inp=$('lockInput'),err=$('lockErr'),card=document.querySelector('.lock-card');
+ const v=inp.value.trim();
+ if(!v)return;
+ const ok=await sha256(v)===PASS_HASH;
+ if(ok){
+  sessionStorage.setItem('viajes_unlocked','1');
+  $('lockScreen').style.transition='opacity .4s';$('lockScreen').style.opacity='0';
+  setTimeout(()=>{$('lockScreen').style.display='none';$('appRoot').style.display='block';initHome()},380);
+  speak('¡Hola! Bienvenido.');
+ }else{
+  err.textContent='密码不对哦，再试试 🦉';
+  card.classList.remove('lock-shake');void card.offsetWidth;card.classList.add('lock-shake');
+  inp.select();incrementLockFail();
+ }
+}
+let lockFails=0;
+function incrementLockFail(){lockFails++;if(lockFails>=3){$('lockErr').textContent='密码不对哦～提示：A 开头、01 结尾，注意大小写 🦉'}}
+function bootLock(){
+ $('lockBtn').addEventListener('click',tryUnlock);
+ $('lockInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock()});
+ if(sessionStorage.getItem('viajes_unlocked')==='1'){
+  $('lockScreen').style.display='none';$('appRoot').style.display='block';initHome();
+ }else{$('lockInput').focus()}
+}
+
+/* ============ 基础 ============ */
+const STORE_KEY='travel_viajes_play_v2';
+const DAILY_GOAL=30;
+const LEVELS=['A1','A2','B1','B2','C1'];
+const TYPE_INFO={
+ es2zh:{name:'认一认',cls:'es2zh'},zh2es:{name:'译一译',cls:'zh2es'},listen:{name:'听一听',cls:'listen'},
+ fill:{name:'填一填',cls:'fill'},order:{name:'排一排',cls:'order'},situation:{name:'演一演',cls:'situation'},judge:{name:'判一判',cls:'judge'}};
+let QUESTIONS=[];
+let state={qs:[],idx:0,correct:0,answered:false,mode:'',wrongThisSession:[],curCard:0,curTheme:0,orderPicked:[]};
+
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffled(arr,seed){const a=[...arr];const r=rng(seed);for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function shuffle(arr){return shuffled(arr,(Math.random()*1e9)>>>0)}
+function hstr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function pick(seed,arr){return arr[seed%arr.length]}
+function cleanEs(s){return s.replace(/[{}¿?¡!.,:;]/g,'').replace(/\s+/g,' ').trim()}
+function plainEs(s){return s.replace(/[{}]/g,'')}
+const STOP=new Set(['el','la','los','las','un','una','unos','unas','de','que','en','no','es','me','le','se','su','sus','y','a','o','del','al','por','para','con','más','muy','lo','si','ya','mi','tu','te','nos','os','les','eso','esto','aquí','hay','como','sin','sobre','entre','hasta','desde','otra','otro','puede','puedo','son','está','estoy','he','ha','le','les','me','nos','te','os','mí','ti','él','ella','ellas','ellos','uno','dos','tres','qué','cuál','dónde','cuándo','quién','cómo','cuánto','esa','ese','esta','este','soy','eres','fue','era','muy','más','menos','todo','toda','todos','todas','ante','bajo','contra','desde','hasta','según','tras','durante','mediante']);
+
+/* ============ 题目生成 ============ */
+function fillToken(es){
+ const toks=cleanEs(es).split(' ');
+ const cand=toks.map((w,i)=>({w,i})).filter(x=>x.w.length>=5&&!STOP.has(x.w.toLowerCase()));
+ if(!cand.length){const longest=[...toks].sort((a,b)=>b.length-a.length)[0];return{toks,w:longest,i:toks.indexOf(longest)}}
+ return{toks,w:cand[hstr(es)%cand.length].w,i:cand[hstr(es)%cand.length].i};
+}
+function buildQuestions(){
+ const out=[];
+ CARDS.forEach(c=>{
+  const scene=c.name;
+  // ---- 词汇：每词2题 ----
+  c.v.forEach((pair,i)=>{
+   const[es,zh]=pair;
+   const otherZh=c.v.filter((_,j)=>j!==i).map(p=>p[1]);
+   const otherEs=c.v.filter((_,j)=>j!==i).map(p=>p[0]);
+   // 第一题：偶 es2zh / 奇 zh2es
+   if(i%2===0){
+    const o=shuffled([zh,...shuffled(otherZh,hstr(c.id+'-ez'+i)).slice(0,3)],hstr(c.id+'-ezo'+i));
+    out.push({id:`ez${c.id}-${i}`,kind:'es2zh',module:'认一认·西译中',level:c.lv,theme:c.t,scene,
+     q:pick(hstr(c.id+i),['「'+es+'」是什么意思？','看到西语「'+es+'」，它在说：','🦉 Pepe 考考你：「'+es+'」= ？']),
+     o,a:o.indexOf(zh),e:`${scene} · <b>${es}</b> = ${zh}`,speak:es});
+   }else{
+    const o=shuffled([es,...shuffled(otherEs,hstr(c.id+'-ze'+i)).slice(0,3)],hstr(c.id+'-zeo'+i));
+    out.push({id:`ze${c.id}-${i}`,kind:'zh2es',module:'译一译·中译西',level:c.lv,theme:c.t,scene,
+     q:pick(hstr(c.id*2+i),['「'+zh+'」用西语怎么说？','想表达「'+zh+'」，应该说：','哪个西语是「'+zh+'」？']),
+     o,a:o.indexOf(es),e:`${scene} · <b>${es}</b> = ${zh}`,speak:es});
+   }
+   // 第二题：按 i%4
+   const m=i%4;
+   if(m===0){
+    const o=shuffled([es,...shuffled(otherEs,hstr(c.id+'-ze2'+i)).slice(0,3)],hstr(c.id+'-ze2o'+i));
+    out.push({id:`ze2${c.id}-${i}`,kind:'zh2es',module:'译一译·中译西',level:c.lv,theme:c.t,scene,
+     q:'换个问法：「'+zh+'」的西语是——',o,a:o.indexOf(es),e:`${scene} · <b>${es}</b> = ${zh}`,speak:es});
+   }else if(m===1){
+    const o=shuffled([zh,...shuffled(otherZh,hstr(c.id+'-ez2'+i)).slice(0,3)],hstr(c.id+'-ez2o'+i));
+    out.push({id:`ez2${c.id}-${i}`,kind:'es2zh',module:'认一认·西译中',level:c.lv,theme:c.t,scene,
+     q:'再认一个：「'+es+'」的意思是——',o,a:o.indexOf(zh),e:`${scene} · <b>${es}</b> = ${zh}`,speak:es});
+   }else if(m===2){
+    const o=shuffled([zh,...shuffled(otherZh,hstr(c.id+'-lw'+i)).slice(0,3)],hstr(c.id+'-lwo'+i));
+    out.push({id:`lw${c.id}-${i}`,kind:'listen',module:'听一听·听写',level:c.lv,theme:c.t,scene,
+     q:pick(hstr(c.id*3+i),['🔊 仔细听，选出你听到的意思','🔊 Pepe 念了一个词，是什么意思呢？']),
+     o,a:o.indexOf(zh),e:`你听到的是 <b>${es}</b>，意思是：${zh}`,speak:es});
+   }else{
+    const right=hstr(c.id+'-jw'+i)%2===0;
+    const fakeZh=shuffled(otherZh,hstr(c.id+'-jwf'+i))[0];
+    out.push({id:`jw${c.id}-${i}`,kind:'judge',module:'判一判·判断正误',level:c.lv,theme:c.t,scene,
+     q:`下面的西语和中文，意思一致吗？<br><br><span style="font-size:19px;color:var(--sky-d)">${es}</span><br><span style="font-size:14px;color:#5a7184">${right?zh:fakeZh}</span>`,
+     a:right,e:`正确对照：<b>${es}</b> = ${zh}`,speak:es});
+   }
+  });
+  // ---- 句型 ----
+  const fillInfo=c.p.map(pair=>fillToken(pair[0]));
+  c.p.forEach((pair,i)=>{
+   const[es,zh]=pair;
+   const otherZh=c.p.filter((_,j)=>j!==i).map(p=>p[1]);
+   const otherEs=c.p.filter((_,j)=>j!==i).map(p=>p[0]);
+   // 中译西
+   const o1=shuffled([es,...shuffled(otherEs,hstr(c.id+'-zp'+i)).slice(0,3)],hstr(c.id+'-zpo'+i));
+   out.push({id:`zp${c.id}-${i}`,kind:'zh2es',module:'译一译·中译西',level:c.lv,theme:c.t,scene,
+    q:pick(hstr(c.id*5+i),['在「'+scene+'」时，想表达「'+zh+'」，应该说：','「'+zh+'」用地道西语说——','这句中文怎么说才自然？「'+zh+'」']),
+    o:o1,a:o1.indexOf(es),e:`<b>${plainEs(es)}</b><br>${zh}`,speak:plainEs(es)});
+   // 填空
+   const fi=fillInfo[i];
+   const distToks=fillInfo.filter((_,j)=>j!==i).map(f=>f.w).filter(w=>w!==fi.w);
+   let dist=[...new Set(distToks)];
+   if(dist.length<3){c.v.forEach(p=>p[0].split(' ').forEach(w=>{if(w.length>=4&&w!==fi.w&&!dist.includes(w))dist.push(w)}))}
+   const o2=shuffled([fi.w,...dist.slice(0,3)],hstr(c.id+'-fbo'+i));
+   const disp=plainEs(es).split(' ').map((w,idx)=>{
+     const cleanW=w.replace(/[¿?¡!.,:;]/g,'');
+     return cleanW===fi.w?'<b style="color:var(--coral-d);letter-spacing:2px">＿＿＿</b>':w;
+   }).join(' ');
+   out.push({id:`fb${c.id}-${i}`,kind:'fill',module:'填一填·挖空',level:c.lv,theme:c.t,scene,
+    q:'哪个词放进空格最合适？<br><br><span style="font-size:16.5px;color:#1f3a52">'+disp+'</span><br><span style="font-size:12.5px;color:#8aa0b4">'+zh+'</span>',
+    o:o2,a:o2.indexOf(fi.w),e:`完整句子：<b>${plainEs(es)}</b><br>${zh}`,speak:plainEs(es)});
+   // 听力（偶数句）
+   if(i%2===0){
+    const o3=shuffled([zh,...shuffled(otherZh,hstr(c.id+'-lp'+i)).slice(0,3)],hstr(c.id+'-lpo'+i));
+    out.push({id:`lp${c.id}-${i}`,kind:'listen',module:'听一听·听写',level:c.lv,theme:c.t,scene,
+     q:pick(hstr(c.id*7+i),['🔊 听 Pepe 说一句话，选出意思','🔊 竖起耳朵听，这句话在说什么？']),
+     o:o3,a:o3.indexOf(zh),e:`你听到的是：<b>${plainEs(es)}</b><br>${zh}`,speak:plainEs(es)});
+   }else{
+    // 判断（奇数句）
+    const right=hstr(c.id+'-jp'+i)%2===0;
+    const fake=shuffled(otherZh,hstr(c.id+'-jpf'+i))[0];
+    out.push({id:`jp${c.id}-${i}`,kind:'judge',module:'判一判·判断正误',level:c.lv,theme:c.t,scene,
+     q:`这句西语和下面的中文意思一致吗？<br><br><span style="font-size:16px;color:var(--sky-d);line-height:1.6">${plainEs(es)}</span><br><span style="font-size:13.5px;color:#5a7184">${right?zh:fake}</span>`,
+     a:right,e:`正确对照：<b>${plainEs(es)}</b><br>${zh}`,speak:plainEs(es)});
+   }
+  });
+  // 情景应答（前3句）
+  c.p.slice(0,3).forEach((pair,i)=>{
+   const[es,zh]=pair;
+   const others=c.p.filter((_,j)=>j!==i).map(p=>p[0]).map(plainEs);
+   const o=shuffled([plainEs(es),...shuffled(others,hstr(c.id+'-st'+i)).slice(0,3)],hstr(c.id+'-sto'+i));
+   out.push({id:`st${c.id}-${i}`,kind:'situation',module:'演一演·情景应答',level:c.lv,theme:c.t,scene,
+    q:`🎬 <b>情景小剧场 · ${scene}</b><br><span style="font-weight:600;color:#5a7184;font-size:14px">${zh} —— 这时候你该开口说哪句？</span>`,
+    o,a:o.indexOf(plainEs(es)),e:`地道说法：<b>${plainEs(es)}</b><br>${zh}`,speak:plainEs(es)});
+  });
+  // 连词成句（2个4-8词短句）
+  c.p.map((p,i)=>({es:plainEs(p[0]),zh:p[1],i})).filter(x=>{const n=cleanEs(x.es).split(' ').length;return n>=4&&n<=8}).slice(0,2).forEach(x=>{
+   const words=cleanEs(x.es).split(' ').map((w,idx)=>({w,idx}));
+   let pool=shuffled(words,hstr(c.id+'-od'+x.i));
+   if(pool.every((t,k)=>t.idx===k))pool=pool.slice(1).concat(pool[0]);
+   out.push({id:`od${c.id}-${x.i}`,kind:'order',module:'排一排·连词成句',level:c.lv,theme:c.t,scene,
+    q:pick(hstr(c.id*11+x.i),['🧩 Pepe 的句子被打乱啦，按正确顺序点词块拼好：','把下面的词块排成一句通顺的西语：']),
+    tokens:pool,ans:words.map(w=>w.idx),e:`正确句子：<b>${plainEs(x.es)}</b><br>${x.zh}`,speak:plainEs(x.es)});
+  });
+ });
+ return out;
+}
+QUESTIONS=buildQuestions();
+
+/* ============ 存储 ============ */
+function loadData(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||{}}catch(e){return{}}}
+function saveData(d){localStorage.setItem(STORE_KEY,JSON.stringify(d))}
+function getData(){let d=loadData();
+ if(!d.total)d={total:0,correct:0,wrong:{},done:{},days:{},levelStats:{},moduleStats:{},learned:{},streak:0,lastDay:'',achievements:{}};
+ LEVELS.forEach(l=>{if(!d.levelStats[l])d.levelStats[l]={t:0,c:0}});
+ return d}
+function todayStr(){return new Date().toISOString().slice(0,10)}
+function $(id){return document.getElementById(id)}
+
+/* ============ 首页 ============ */
+function initHome(){
+ const d=getData();const today=todayStr();const todayDone=(d.days&&d.days[today])||0;
+ $('heroStreak').textContent=d.streak||0;
+ $('heroTotal').textContent=d.total||0;
+ $('heroRate').textContent=d.total>0?Math.round(d.correct/d.total*100)+'%':'0%';
+ $('dailyCount').textContent=todayDone+'/'+DAILY_GOAL+'题';
+ $('dailyFill').style.width=Math.min(100,todayDone/DAILY_GOAL*100)+'%';
+ const learned=Object.keys(d.learned||{}).length;
+ $('sCards').textContent=learned+'/'+CARDS.length;
+ $('sDone').textContent=Object.keys(d.done||{}).length;
+ $('sRate').textContent=d.total>0?Math.round(d.correct/d.total*100)+'%':'0%';
+ const wc=Object.keys(d.wrong||{}).length;
+ $('sWrong').textContent=wc;
+ const wb=$('weakBadge');if(wc>0){wb.style.display='block';wb.textContent=wc>99?'99+':wc}else if(wb){wb.style.display='none'}
+ $('levelRow').innerHTML=LEVELS.map(l=>{const s=d.levelStats[l]||{t:0,c:0};const p=s.t?Math.round(s.c/s.t*100)+'%':'—';
+  return`<div class="level-pill"><div class="lv lv-c-${l}">${l}</div><div class="pc">${p}</div></div>`}).join('');
+ renderThemes(d);renderAchievements(d);
+}
+function renderThemes(d){
+ const box=$('themeGrid');box.innerHTML='';
+ THEMES.forEach(t=>{
+  const cs=CARDS.filter(c=>c.t===t.id);
+  const done=cs.filter(c=>d.learned&&d.learned[c.id]).length;
+  const pct=Math.round(done/cs.length*100);
+  const div=document.createElement('div');div.className='theme-card';div.style.setProperty('--tc',t.color);
+  div.innerHTML=`<div class="theme-icon">${t.icon}</div><div class="theme-name">${t.name}</div><div class="theme-sub">${cs.length} 张卡</div><div class="theme-bar"><div class="theme-fill" style="width:${pct}%"></div></div><div class="theme-progress">${done}/${cs.length} · ${pct}%</div>`;
+  div.onclick=()=>openTheme(t.id);box.appendChild(div);
+ });
+}
+function renderAchievements(d){
+ const learned=Object.keys(d.learned||{}).length;
+ const achs=[
+ {icon:'🎯',name:'首战告捷',ok:d.total>=1},{icon:'💯',name:'十题达成',ok:d.total>=10},
+ {icon:'💪',name:'百题斩',ok:d.total>=100},{icon:'🏆',name:'千题王',ok:d.total>=1000},
+ {icon:'🔥',name:'3日连续',ok:(d.streak||0)>=3},{icon:'⚡',name:'一周达人',ok:(d.streak||0)>=7},
+ {icon:'✨',name:'连对十题',ok:!!(d.achievements&&d.achievements.perfect10)},{icon:'🧭',name:'学完10卡',ok:learned>=10}];
+ $('achievements').innerHTML=achs.map(a=>`<div class="achievement${a.ok?' unlocked':''}"><div class="icon">${a.icon}</div><div class="name">${a.name}</div></div>`).join('');
+}
+
+/* ============ 主题页 ============ */
+function shade(hex,amt){const n=parseInt(hex.slice(1),16);let r=(n>>16)+amt,g=((n>>8)&255)+amt,b=(n&255)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return'#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+function openTheme(tid){
+ state.curTheme=tid;const t=THEMES.find(x=>x.id===tid);const d=getData();
+ const cs=CARDS.filter(c=>c.t===tid);
+ const done=cs.filter(c=>d.learned&&d.learned[c.id]).length;
+ $('themeBanner').style.background=`linear-gradient(135deg,${t.color},${shade(t.color,-22)})`;
+ $('themeBanner').innerHTML=`<div class="big-icon">${t.icon}</div><h2>${t.icon} ${t.name}</h2><p>${t.desc}</p><div class="progress-line">🦉 已完成 ${done}/${cs.length} 张任务卡</div>`;
+ $('lessonList').innerHTML=cs.map((c,i)=>{
+  const ok=d.learned&&d.learned[c.id];
+  const nq=QUESTIONS.filter(q=>q.theme===tid&&q.scene===c.name).length;
+  return `<div class="lesson-card ${ok?'done':''}" style="--tc:${t.color}" onclick="openCard(${c.id})">
+ <div class="lesson-num">${ok?'🌟':i+1}</div>
+ <div class="lesson-main"><div class="lesson-name">${c.name}</div>
+ <div class="lesson-meta"><span class="lv-pill lv-${c.lv}">${c.lv}</span><span>${c.v.length}词 · ${c.p.length}句 · ${nq}题</span></div></div>
+ <div class="lesson-go">›</div></div>`;
+ }).join('');
+ showPage('themePage');
+}
+
+/* ============ 学习卡 ============ */
+function openCard(cid){
+ state.curCard=cid;const c=CARDS.find(x=>x.id===cid);const t=THEMES.find(x=>x.id===c.t);
+ const cs=CARDS.filter(x=>x.t===c.t);const idx=cs.findIndex(x=>x.id===cid);
+ $('cardBackBtn').onclick=()=>openTheme(c.t);
+ $('cardStep').textContent=`${idx+1}/${cs.length}`;
+ const esc=s=>s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+ const slot=s=>s.replace(/\{(.+?)\}/g,'<span class="slot">$1</span>');
+ const d=getData();const learned=!!(d.learned&&d.learned[cid]);
+ let html=`<div class="card-head" style="--tc:${t.color}">
+<div class="crumbs">${t.icon} ${t.name}</div>
+<h2>${c.name}</h2><span class="lv-pill lv-${c.lv}" style="margin-top:8px">难度 ${c.lv}</span></div>`;
+ html+=`<div class="block b1"><h3><span class="n">1</span>🔤 核心词汇（点一下听发音）</h3><div class="vocab-list">`;
+ c.v.forEach(([es,zh])=>{html+=`<div class="vocab-item" onclick="speak('${esc(es)}')"><span class="vocab-es">${es}</span><span class="vocab-zh">${zh}</span><span class="spk">🔊</span></div>`});
+ html+=`</div></div>`;
+ html+=`<div class="block b2"><h3><span class="n">2</span>🎙️ 核心句型（橙色能替换，💬是本土口语）</h3>`;
+ c.p.forEach(([es,zh,tag])=>{html+=`<div class="pat-card"><div class="pat-es">${slot(es)}${tag==='c'?'<span class="pat-tag">💬 口语</span>':''}</div><div class="pat-zh">${zh}</div><div class="pat-actions"><button class="mini-spk" onclick="speak('${esc(plainEs(es))}')">🔊 跟读</button></div></div>`});
+ html+=`</div>`;
+ const[goal,steps]=c.mission;
+ html+=`<div class="block b3"><h3><span class="n">3</span>🎯 真实任务</h3><div class="mission-box"><div class="goal">🦉 ${goal}</div><ul class="mission-steps">`;
+ steps.forEach((s,i)=>{html+=`<li data-n="${i+1}">${s}</li>`});
+ html+=`</ul></div></div>`;
+ html+=`<div class="block b4"><h3><span class="n">4</span>🔁 可替换信息（点一下听发音）</h3>`;
+ c.swaps.forEach(([label,...exs])=>{
+  html+=`<div class="swap-group"><div class="swap-label">🔸 ${label}</div><div class="swap-chips">`;
+  exs.forEach(e=>{html+=`<button class="swap-chip" onclick="speak('${esc(e)}')">${e}</button>`});
+  html+=`</div></div>`});
+ html+=`</div>`;
+ const[speakTask,writeTask,hints]=c.out;
+ html+=`<div class="block b5"><h3><span class="n">5</span>✏️ 开口与动笔</h3>
+<div class="task-box"><div class="task-title">🎙️ 口语：${speakTask}</div>
+<div class="rec-controls"><button class="rec-btn" id="recBtn" onclick="toggleRec()">● 开始录音</button><span class="rec-time" id="recTime">0:00</span></div>
+<audio id="recPlay" controls></audio>
+<div class="rec-hint" id="recHint">录音只在本页练习回放，不会上传；不支持录音的浏览器可用手机录音 App 对照。</div></div>
+<div class="task-box"><div class="task-title">✍️ 写作：${writeTask}</div>
+<textarea class="diary-area" id="diaryArea" placeholder="Pepe 在这里等你写下西语句子，会自动保存在本机哦……"></textarea>
+<div class="diary-meta"><span id="wordCount">0 词</span><span id="saveState"></span></div>
+<div class="hint-line">💡 提示句型（点一下听读）：${hints.map(h=>`<span class="h" onclick="speak('${esc(plainEs(h))}')">${slot(h)}</span>`).join(' · ')}</div>
+</div></div>`;
+ const prev=cid>0?CARDS[cid-1]:null;const next=cid<CARDS.length-1?CARDS[cid+1]:null;
+ const nq=QUESTIONS.filter(q=>q.scene===c.name&&q.theme===c.t).length;
+ html+=`<div class="card-actions">
+<button class="big-btn secondary" onclick="${prev?`openCard(${prev.id})`:`openTheme(${c.t})`}">← 上一张</button>
+<button class="big-btn secondary" onclick="${next&&next.t===c.t?`openCard(${next.id})`:`openTheme(${c.t})`}">下一张 →</button>
+<button class="big-btn primary" style="grid-column:1/-1" onclick="startCardQuiz(${cid})">🎮 玩本卡 ${nq} 题</button>
+<button class="big-btn full" onclick="finishCard(${cid})">${learned?'🌟 已通关（再点一次）':'✅ 通关本卡学习'}</button>
+</div>`;
+ $('cardContent').innerHTML=html;
+ const area=$('diaryArea');const saved=localStorage.getItem('diary_'+cid)||'';area.value=saved;updateWordCount();
+ area.addEventListener('input',()=>{localStorage.setItem('diary_'+cid,area.value);updateWordCount();$('saveState').textContent='已自动保存 💾'});
+ recReset();showPage('cardPage');
+}
+function updateWordCount(){const v=$('diaryArea').value.trim();const n=v?v.split(/\s+/).length:0;$('wordCount').textContent=n+' 词'}
+function finishCard(cid){
+ const d=getData();d.learned[cid]=true;saveData(d);
+ confettiBurst();showToast('🌟 通关！Pepe 给你盖了个小星星');
+ const c=CARDS.find(x=>x.id===cid);const same=CARDS.filter(x=>x.t===c.t);const idx=same.findIndex(x=>x.id===cid);
+ if(idx<same.length-1)openCard(same[idx+1].id);else openTheme(c.t);
+}
+
+/* ============ 录音 ============ */
+let rec={mr:null,chunks:[],stream:null,timer:null,sec:0,blobUrl:null};
+function recReset(){rec={mr:null,chunks:[],stream:null,timer:null,sec:0,blobUrl:null};
+ const btn=$('recBtn'),tm=$('recTime'),ap=$('recPlay');
+ if(btn){btn.textContent='● 开始录音';btn.classList.remove('recording')}
+ if(tm)tm.textContent='0:00';if(ap){ap.style.display='none';ap.removeAttribute('src')}}
+async function toggleRec(){
+ const btn=$('recBtn'),tm=$('recTime'),ap=$('recPlay'),hint=$('recHint');
+ if(!rec.mr){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){hint.textContent='当前浏览器不支持网页录音，请用手机录音 App 练习哦。';return}
+  try{rec.stream=await navigator.mediaDevices.getUserMedia({audio:true})}
+  catch(e){hint.textContent='麦克风没有授权，可以用手机录音 App 对照练习～';return}
+  rec.chunks=[];rec.mr=new MediaRecorder(rec.stream);
+  rec.mr.ondataavailable=e=>{if(e.data.size)rec.chunks.push(e.data)};
+  rec.mr.onstop=()=>{
+   const blob=new Blob(rec.chunks,{type:'audio/webm'});
+   if(rec.blobUrl)URL.revokeObjectURL(rec.blobUrl);
+   rec.blobUrl=URL.createObjectURL(blob);ap.src=rec.blobUrl;ap.style.display='block';
+   rec.stream.getTracks().forEach(t=>t.stop());clearInterval(rec.timer);
+   btn.textContent='● 重新录音';btn.classList.remove('recording')};
+  rec.mr.start();rec.sec=0;btn.textContent='■ 停止';btn.classList.add('recording');
+  rec.timer=setInterval(()=>{rec.sec++;tm.textContent=Math.floor(rec.sec/60)+':'+String(rec.sec%60).padStart(2,'0')},1000);
+ }else{if(rec.mr.state==='recording')rec.mr.stop()}
+}
+
+/* ============ 练习模式 ============ */
+function startDaily(){
+ const d=getData();const today=todayStr();const todayDone=Math.min((d.days&&d.days[today])||0,DAILY_GOAL);
+ const remaining=DAILY_GOAL-todayDone;
+ const wrong=QUESTIONS.filter(q=>d.wrong&&d.wrong[q.id]);
+ const undone=QUESTIONS.filter(q=>!d.done||!d.done[q.id]);
+ state.qs=[...shuffle(wrong),...shuffle(undone)].slice(0,Math.max(remaining,10));
+ state.mode='daily';startQuiz();
+}
+function startWeak(){
+ const d=getData();const ids=Object.keys(d.wrong||{});
+ if(!ids.length){showToast('🦉 错题修理铺空空的，太厉害啦！');return}
+ state.qs=shuffle(QUESTIONS.filter(q=>ids.includes(q.id)));state.mode='weak';startQuiz();
+}
+function startPattern(){
+ state.qs=shuffle(QUESTIONS.filter(q=>['zp','lp','jp','fb','st','od'].some(p=>q.id.startsWith(p)))).slice(0,30);
+ state.mode='pattern';startQuiz();
+}
+function startRandom(){state.qs=shuffle([...QUESTIONS]);state.mode='random';startQuiz()}
+function startCardQuiz(cid){const c=CARDS.find(x=>x.id===cid);state.qs=shuffle(QUESTIONS.filter(q=>q.theme===c.t&&q.scene===c.name));state.mode='card';startQuiz()}
+function startQuiz(){state.idx=0;state.correct=0;state.answered=false;state.wrongThisSession=[];showPage('quizPage');renderQuestion()}
+
+/* ============ 渲染题目 ============ */
+const CHEERS_GOOD=['¡Muy bien! 非常好！','¡Perfecto! 完美！','¡Genial! 太棒了！','¡Excelente! 优秀！','¡Bravo! 干得漂亮！','¡Qué bien! 真厉害！'];
+const CHEERS_BAD=['¡Ánimo! 加油，再来～','Casi... 差一点点！','No pasa nada, 记住就好～','¡Tú puedes! 你可以的！'];
+function renderQuestion(){
+ state.answered=false;state.orderPicked=[];
+ const q=state.qs[state.idx];const info=TYPE_INFO[q.kind];
+ $('quizProgress').textContent=(state.idx+1)+'/'+state.qs.length;
+ $('quizScore').textContent='⭐'+state.correct;
+ $('topBar').style.width=((state.idx+1)/state.qs.length*100)+'%';
+ let tags=`<span class="q-tag tag-${q.kind}">${info.name}</span><span class="q-tag lv-${q.level}">${q.level}</span><span class="q-tag tag-scene">${THEMES[q.theme-1].icon} ${q.scene}</span>`;
+ let body='';
+ if(q.kind==='order'){
+  body=`<div class="q-text">${q.q}</div>
+  <div class="order-hint">👇 点下面的词块，按顺序拼句子（再点上方词块可退回）</div>
+  <div class="order-answer" id="orderAnswer"></div>
+  <div class="order-pool" id="orderPool"></div>
+  <button class="next-btn" id="orderCheck" style="display:block;background:linear-gradient(135deg,#b197fc,#9775fa);box-shadow:0 6px 15px rgba(151,117,250,.35)">✅ 拼好了，确认</button>`;
+ }else if(q.kind==='judge'){
+  body=`<div class="q-text">${q.q}</div>
+  <div class="judge-opts">
+   <button class="judge-btn" id="jTrue" onclick="selectJudge(true)"><span class="ji">✅</span>意思一致</button>
+   <button class="judge-btn" id="jFalse" onclick="selectJudge(false)"><span class="ji">❌</span>不一致</button>
+  </div>`;
+ }else if(q.kind==='listen'){
+  body=`<div class="q-tags">${tags}</div>
+   <button class="big-listen" onclick="speak('${escJs(q.speak)}')">🔊<span class="lt">点我再听一遍</span></button>
+   <div class="q-text" style="font-size:15px">${q.q}</div>
+   <div class="options">${q.o.map((o,i)=>`<div class="option" id="opt${i}" onclick="selectOpt(${i})"><div class="opt-letter">${String.fromCharCode(65+i)}</div><div>${o}</div></div>`).join('')}</div>`;
+  tags='';
+ }else{
+  body=`<div class="q-text">${q.q}</div><div class="options">${q.o.map((o,i)=>`<div class="option" id="opt${i}" onclick="selectOpt(${i})"><div class="opt-letter">${String.fromCharCode(65+i)}</div><div>${o}</div></div>`).join('')}</div>`;
+ }
+ let html=`<div class="question-card">`;
+ if(tags)html+=`<div class="q-tags">${tags}</div>`;
+ html+=body;
+ html+=`<div class="explain" id="explainBox"></div>`;
+ html+=`<button class="next-btn" id="nextBtn" onclick="nextQ()">${state.idx<state.qs.length-1?'下一题 →':'看看战果 🎉'}</button>`;
+ html+=`</div>`;
+ $('quizContent').innerHTML=html;
+ if(q.kind==='order'){renderOrder(q);$('orderCheck').onclick=()=>checkOrder(q)}
+ if(q.kind==='listen'){setTimeout(()=>speak(q.speak),350)}
+}
+function renderOrder(q){
+ const pool=$('orderPool'),ans=$('orderAnswer');
+ pool.innerHTML=q.tokens.map((t,k)=>`<button class="order-token" data-k="${k}" onclick="pickOrder(${k})">${t.w}</button>`).join('');
+ ans.innerHTML='<span class="order-hint" style="margin:0">句子拼在这里 ⬇️</span>';
+}
+function pickOrder(k){
+ const q=state.qs[state.idx];
+ const poolBtn=document.querySelector(`.order-pool .order-token[data-k="${k}"]`);
+ if(state.orderPicked.includes(k)){
+  state.orderPicked=state.orderPicked.filter(x=>x!==k);
+ }else{
+  state.orderPicked.push(k);
+  const ans=$('orderAnswer');
+  const hint=ans.querySelector('.order-hint');if(hint)hint.remove();
+  const t=q.tokens[k];
+  const b=document.createElement('button');b.className='order-token';b.textContent=t.w;
+  b.onclick=()=>pickOrder(k);ans.appendChild(b);
+  poolBtn.classList.add('used');
+ }
+ // 重绘 answer
+ const ans=$('orderAnswer');ans.innerHTML='';
+ state.orderPicked.forEach(kk=>{const t=q.tokens[kk];const b=document.createElement('button');b.className='order-token';b.textContent=t.w;b.onclick=()=>pickOrder(kk);ans.appendChild(b)});
+ document.querySelectorAll('.order-pool .order-token').forEach((b,i)=>{b.classList.toggle('used',state.orderPicked.includes(Number(b.dataset.k)))});
+}
+function checkOrder(q){
+ if(state.answered)return;
+ if(state.orderPicked.length!==q.tokens.length){showToast('🦉 词块还没拼完哦');return}
+ const pickedIdx=state.orderPicked.map(k=>q.tokens[k].idx);
+ const ok=pickedIdx.every((v,i)=>v===q.ans[i]);
+ finishQuestion(ok,q,{order:true});
+}
+function escJs(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
+function selectOpt(i){
+ if(state.answered)return;const q=state.qs[state.idx];
+ q.o.forEach((_,j)=>{const el=$('opt'+j);if(el){el.style.pointerEvents='none';if(j===q.a)el.classList.add('correct');if(j===i&&i!==q.a)el.classList.add('wrong')}});
+ finishQuestion(i===q.a,q);
+}
+function selectJudge(v){
+ if(state.answered)return;const q=state.qs[state.idx];
+ const t=$('jTrue'),f=$('jFalse');
+ t.style.pointerEvents='none';f.style.pointerEvents='none';
+ if(q.a){t.classList.add('correct')}else{f.classList.add('correct')}
+ if(!q.a&&v){t.classList.add('wrong')}
+ if(q.a&&!v){f.classList.add('wrong')}
+ finishQuestion(v===q.a,q);
+}
+function finishQuestion(ok,q,opts){
+ state.answered=true;
+ const d=getData();
+ d.total=(d.total||0)+1;const today=todayStr();d.days[today]=(d.days[today]||0)+1;d.done[q.id]=true;
+ if(!d.levelStats[q.level])d.levelStats[q.level]={t:0,c:0};
+ d.levelStats[q.level].t++;if(ok)d.levelStats[q.level].c++;
+ if(!d.moduleStats[q.module])d.moduleStats[q.module]={t:0,c:0};d.moduleStats[q.module].t++;if(ok)d.moduleStats[q.module].c++;
+ if(ok){
+  state.correct++;d.correct=(d.correct||0)+1;delete d.wrong[q.id];
+  if(state.correct>=10&&state.idx>=9)d.achievements.perfect10=true;
+  if(state.correct%5===0)confettiBurst();
+ }else{d.wrong[q.id]=true;state.wrongThisSession.push(q.id)}
+ if(d.lastDay!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);d.streak=d.lastDay===y?(d.streak||0)+1:1;d.lastDay=today}
+ saveData(d);
+ const cheer=ok?pick(hstr(q.id)+state.correct,CHEERS_GOOD):pick(hstr(q.id),CHEERS_BAD);
+ const oc=$('orderCheck');if(oc)oc.style.display='none';
+ const ex=$('explainBox');
+ ex.innerHTML=`<div class="cheer ${ok?'good':'bad'}">${ok?'✅ '+cheer:'❌ '+cheer}</div><div class="explain-title">💡 解析</div><div>${q.e}</div>${q.speak?'<button class="speak-btn" onclick="speak(\''+escJs(q.speak)+'\')">🔊 听一听正确说法</button>':''}`;
+ ex.classList.add('show');
+ const nb=$('nextBtn');if(nb)nb.classList.add('show');
+ $('quizScore').textContent='⭐'+state.correct;
+}
+function nextQ(){state.idx++;if(state.idx>=state.qs.length)showResult();else renderQuestion()}
+function quitQuiz(){goHome()}
+
+/* ============ 结果 ============ */
+function showResult(){
+ showPage('resultPage');const total=state.qs.length,correct=state.correct;const rate=Math.round(correct/total*100);
+ let emoji,title,bg;
+ if(rate>=90){emoji='🏆';title='Pepe 为你骄傲！';bg='linear-gradient(135deg,#ffd43b,#fa5252 60%,#9775fa)'}
+ else if(rate>=70){emoji='🎉';title='很棒，大胆开口吧！';bg='linear-gradient(135deg,#74c0fc,#4dabf7 55%,#9775fa)'}
+ else if(rate>=50){emoji='💪';title='继续加油，修理一下错题！';bg='linear-gradient(135deg,#ffa94d,#ff8787)'}
+ else{emoji='📚';title='回卡片跟读几遍再来！';bg='linear-gradient(135deg,#adb5bd,#868e96)'}
+ $('resultHero').style.background=bg;
+ $('rEmoji').textContent=emoji;$('rTitle').textContent=title;$('rScore').textContent=correct+'/'+total;
+ $('rDetail').textContent=`正确率 ${rate}% · 修理 ${total-correct} 道题`;
+ if(rate>=90)confettiBurst(26);
+ const mods={};state.qs.forEach(q=>{if(!mods[q.module])mods[q.module]={t:0,c:0};mods[q.module].t++;if(!state.wrongThisSession.includes(q.id))mods[q.module].c++});
+ let mh='',weak=[];
+ Object.entries(mods).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([n,m])=>{const r=Math.round(m.c/m.t*100);const tag=r>=70?'<span class="strong-tag">掌握</span>':'<span class="weak-tag">待修理</span>';if(r<70)weak.push(n);mh+=`<div class="analysis-row"><span>${n}</span><span>${m.c}/${m.t} · ${r}% ${tag}</span></div>`});
+ $('moduleAnalysis').innerHTML=mh;
+ const lvvs={};state.qs.forEach(q=>{if(!lvvs[q.level])lvvs[q.level]={t:0,c:0};lvvs[q.level].t++;if(!state.wrongThisSession.includes(q.id))lvvs[q.level].c++});
+ $('levelAnalysis').innerHTML=LEVELS.filter(l=>lvvs[l]).map(l=>{const m=lvvs[l];const r=Math.round(m.c/m.t*100);return`<div class="analysis-row"><span class="lv-pill lv-${l}">${l}</span><span>${m.c}/${m.t} · ${r}%</span></div>`}).join('')||'<div class="analysis-row"><span>本轮无数据</span></div>';
+ if(weak.length){$('weakCard').style.display='block';$('weakAnalysis').innerHTML=`<p style="font-size:13px;color:var(--coral-d);font-weight:700">🔧 建议回卡片复习：${weak.join('、')}</p><p style="font-size:12px;color:var(--muted);margin-top:6px">跟读句型后，去首页「错题修理铺」修好它们～</p>`}else $('weakCard').style.display='none';
+}
+function retryWrong(){
+ if(!state.wrongThisSession.length){showToast('🦉 本轮全对，没有要修理的题！');goHome();return}
+ state.qs=shuffle(QUESTIONS.filter(q=>state.wrongThisSession.includes(q.id)));state.mode='retry';startQuiz();
+}
+
+/* ============ 通用 ============ */
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');window.scrollTo(0,0)}
+function goHome(){showPage('homePage');$('topBar').style.width='0%';initHome()}
+function showToast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.style.opacity='1',10);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},2000)}
+function speak(text){
+ if(!('speechSynthesis' in window))return;
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text));u.lang='es-ES';u.rate=.88;
+ const v=speechSynthesis.getVoices().find(x=>x.lang&&x.lang.toLowerCase().startsWith('es'));if(v)u.voice=v;
+ speechSynthesis.speak(u);
+}
+function confettiBurst(n){
+ const layer=$('confettiLayer');if(!layer)return;
+ const emos=['⭐','🎉','✨','🌟','🎈','💫','🪅'];
+ for(let i=0;i<(n||14);i++){
+  const p=document.createElement('div');p.className='confetti-p';
+  p.textContent=emos[i%emos.length];
+  p.style.left=Math.random()*100+'vw';p.style.animationDuration=(1.8+Math.random()*1.6)+'s';
+  p.style.fontSize=(16+Math.random()*14)+'px';
+  layer.appendChild(p);setTimeout(()=>p.remove(),3600);
+ }
+}
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>{};
+window.__app=()=>({QUESTIONS,state,CARDS,THEMES});
+window.addEventListener('DOMContentLoaded',bootLock);
+</script>
+</body>
+</html>
