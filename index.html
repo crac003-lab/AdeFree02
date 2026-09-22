@@ -261,9 +261,9 @@ background:linear-gradient(160deg,#74c0fc 0%,#4dabf7 45%,#9775fa 100%)}
 <!-- ===== 密码屏 ===== -->
 <div id="lockScreen">
 <div class="lock-card">
-<div class="lock-mascot">🦉</div>
+<div class="lock-mascot">🥚</div>
 <h1>¡Hola! 旅行西语大冒险</h1>
-<p>猫头鹰 Pepe 守在乐园门口 🗝️<br>请输入访问密码，和 Pepe 一起闯关</p>
+<p>🥚 阿蛋 守在乐园门口 🗝️<br>请输入访问密码，和 🥚阿蛋 一起闯关</p>
 <input type="password" class="lock-input" id="lockInput" placeholder="请输入密码" autocomplete="off" inputmode="text">
 <button class="lock-btn" id="lockBtn">🚀 开始冒险</button>
 <div class="lock-err" id="lockErr"></div>
@@ -278,7 +278,7 @@ background:linear-gradient(160deg,#74c0fc 0%,#4dabf7 45%,#9775fa 100%)}
 <div class="page active" id="homePage"><div class="container">
 <div class="hero">
 <span class="cloud">☁️</span>
-<h1><span class="mascot">🦉</span>旅行西语大冒险</h1>
+<h1><span class="mascot">🥚</span>旅行西语大冒险</h1>
 <p>9 大任务地图 · 跟着 Pepe 把旅行西语玩着学会 ✈️</p>
 <div class="hero-stats">
 <div class="hero-stat"><div class="num" id="heroStreak">0</div><div class="label">🔥 连续天数</div></div>
@@ -316,7 +316,7 @@ background:linear-gradient(160deg,#74c0fc 0%,#4dabf7 45%,#9775fa 100%)}
 <div class="achievements" id="achievements"></div>
 
 <div class="tip-bar">
-<strong>🦉 Pepe 的学习小贴士</strong><br>
+<strong>🥚阿蛋 的学习小贴士</strong><br>
 每张任务卡五步玩：认词汇 → 听句型 → 做任务 → 换词造句 → 录音/写日记<br>
 点任意西语词句都能听发音，大胆跟读；题型有认一认、听一听、填一填、排一排、演一演、判一判，怎么问都不怕～<br>
 例句为旅行场景原创教学内容，融入西班牙与拉美本土口语，难度 A1–C1。
@@ -385,7 +385,7 @@ async function tryUnlock(){
   setTimeout(()=>{$('lockScreen').style.display='none';$('appRoot').style.display='block';initHome()},380);
   speak('¡Hola! Bienvenido.');
  }else{
-  err.textContent='密码不对哦，再试试 🦉';
+  err.textContent='密码不对哦，再试试 🥚';
   card.classList.remove('lock-shake');void card.offsetWidth;card.classList.add('lock-shake');
   inp.select();incrementLockFail();
  }
@@ -698,7 +698,7 @@ function startDaily(){
 }
 function startWeak(){
  const d=getData();const ids=Object.keys(d.wrong||{});
- if(!ids.length){showToast('🦉 错题修理铺空空的，太厉害啦！');return}
+ if(!ids.length){showToast('🥚 错题修理铺空空的，太厉害啦！');return}
  state.qs=shuffle(QUESTIONS.filter(q=>ids.includes(q.id)));state.mode='weak';startQuiz();
 }
 function startPattern(){
