@@ -478,6 +478,11 @@ background:linear-gradient(170deg,#bfe6ff 0%,#8fd0ff 42%,#a6d8ff 72%,#cfe9ff 100
 @media(min-width:560px){.neg-grid{grid-template-columns:1fr 1fr}}
 
 </style></head>
+<div class="update-bar" id="updateBar">
+<span class="ub-icon">🔔</span>
+<div class="ub-text"><b>题库不定时持续更新</b>，当前 <b id="ubVersion">V7</b>非最只终版本，后台会持续扩充语料题库，优化使用体验！遇到问题请勿着急，欢迎反馈，🐣阿蛋定会持续迭代优化🫶🏻</div>
+<button class="ub-close" onclick="dismissUpdateBar()" aria-label="关闭">✕</button>
+</div>
 <body>
 
 <!-- ===== 密码屏 ===== -->
@@ -2767,6 +2772,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 window.__NEGMOD={open:openOverlay};
 })();
 
+ 
 </script>
 </body>
 </html>
