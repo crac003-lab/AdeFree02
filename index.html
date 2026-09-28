@@ -500,7 +500,8 @@ background:linear-gradient(170deg,#bfe6ff 0%,#8fd0ff 42%,#a6d8ff 72%,#cfe9ff 100
 </svg>
 <h1>🥚阿蛋的✈️西语学习</h1>
 <p class="lock-sub">阿蛋 已经破壳，等你一起出发 🗝️<br>输入访问密码，开启环球西语冒险</p>
-<form id="lockForm" autocomplete="on">
+<p style="font-size:11.5px;color:#54708b;line-height:1.75;margin-top:10px;padding:9px 12px;background:#f8fbff;border-radius:12px;border:1px dashed #d0e6fa">📌 <b>感谢内测支持！</b>本版本仍在打磨中，正式版将带来语音识别跟读、云端同步等功能，已购用户免费升级。</p>
+ <form id="lockForm" autocomplete="on">
 <div class="lock-input-wrap">
 <input type="password" class="lock-input" id="lockInput" name="password" placeholder="请输入密码" autocomplete="current-password" inputmode="text">
 <button type="button" class="lock-eye" id="lockEye" onclick="togglePwd()" aria-label="显示密码">👁️</button>
@@ -518,6 +519,11 @@ background:linear-gradient(170deg,#bfe6ff 0%,#8fd0ff 42%,#a6d8ff 72%,#cfe9ff 100
 <div class="top-bar" id="topBar" style="width:0%"></div>
 
 <!-- ===== 首页 ===== -->
+.beta-notice{background:linear-gradient(135deg,#f0f9ff,#fef9e7);border:1.5px solid #d0e6fa;border-radius:20px;padding:14px 18px;margin:14px 0;box-shadow:var(--shadow)}
+.beta-notice .bn-title{font-size:13px;font-weight:900;color:#0369a1;margin-bottom:8px}
+.beta-notice .bn-body{font-size:11.5px;color:#54708b;line-height:1.9}
+.beta-notice .bn-body b{color:#0369a1;font-weight:900}
+@media (prefers-color-scheme: dark){.beta-notice{background:#0f2740;border-color:#2f5a85}.beta-notice .bn-title{color:#7cc8fb}.beta-notice .bn-body{color:#9fc4e0}.beta-notice .bn-body b{color:#7cc8fb}}
 <div class="page active" id="homePage"><div class="container">
 <div class="hero">
 <svg class="hero-cloud hc1" viewBox="0 0 100 52"><path d="M24 45 H72 a12 12 0 00 2-23 15 15 0 00-28-9 13 13 0 00-24 11 11 11 0 00 2 21z" fill="#ffffff"/></svg>
@@ -527,7 +533,7 @@ background:linear-gradient(170deg,#bfe6ff 0%,#8fd0ff 42%,#a6d8ff 72%,#cfe9ff 100
 <path d="M100 3 L119 13 L106 17 L104 26 L98 17 L87 19 Z" fill="#ffffff"/>
 </svg>
 <h1><svg class="hero-egg" viewBox="0 0 40 46"><ellipse cx="20" cy="24" rx="15.5" ry="19" fill="#ffffff" stroke="#d7ecfb" stroke-width="1.6"/><path d="M14 11 L19 15 L15 19 L20 23" stroke="#a9d4f4" stroke-width="1.7" fill="none" stroke-linecap="round"/><circle cx="16" cy="27" r="1.7" fill="#38bdf8"/><circle cx="24" cy="27" r="1.7" fill="#38bdf8"/><path d="M16 32 Q20 35.5 24 32" stroke="#38bdf8" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>阿蛋的✈️西语学习</h1>
-<p>9 大任务地图 · 跟着阿蛋把旅行西语玩着学会</p>
+<p>14 大任务地图 · 跟着阿蛋把旅行西语玩着学会 · <span style="opacity:.88;font-size:12px">内测版 V8，持续更新中</span></p>
 <div class="hero-stats">
 <div class="hero-stat"><div class="num" id="heroStreak">0</div><div class="label">🔥 连续天数</div></div>
 <div class="hero-stat"><div class="num" id="heroTotal">0</div><div class="label">⭐ 已闯关</div></div>
@@ -617,12 +623,21 @@ background:linear-gradient(170deg,#bfe6ff 0%,#8fd0ff 42%,#a6d8ff 72%,#cfe9ff 100
 
 <div class="tip-bar">
 <strong>🥚阿蛋 的学习小贴士</strong><br>
-每张任务卡五步玩：认词汇 → 听句型 → 做任务 → 换词造句 → 录音/写日记<br>
+<div class="beta-notice">
+<div class="bn-title">📌 关于本版本（内测中）</div>
+<div class="bn-body">
+· <b>内容仍在持续精修</b>，例句均为原创教学素材，融入西班牙与拉美真实场景<br>
+· 如遇不地道表达或任何疑问，欢迎反馈，我们会及时更新这一版<br>
+· 正式版 V8 将带来语音识别跟读、云端同步，已购用户免费升级 🥚
+</div>
+</div>
+ 每张任务卡五步玩：认词汇 → 听句型 → 做任务 → 换词造句 → 录音/写日记<br>
 点任意西语词句都能听发音，大胆跟读；题型有认一认、听一听、填一填、排一排、演一演、判一判，怎么问都不怕～<br>
 例句为旅行场景原创教学内容，融入西班牙与拉美本土口语，难度 A1–C1。
 </div>
 <div class="copyright-bar">
 <div class="cb-strong">🥚阿蛋的✈️西语学习 · 旅行主题原创教学题库</div>
+<div style="color:#0369a1;font-weight:700;margin-top:2px">此产品非正式版（目前为抢先内测版），🐣阿蛋会在后台持续优化更新，欢迎反馈。</div>
 <div>© 2026 阿蛋西语学习工作室 · 本内容受著作权法保护，仅供授权学习者个人离线使用</div>
 <div>未经书面授权，禁止转载、搬运、售卖、录屏二次分发或用于商业用途；题库例句均按母语者真实表达整理</div>
 </div>
@@ -2248,7 +2263,7 @@ function onlineSpeak(t,onAllFail){
   speakBusy=false;
   const now=Date.now();
   if(now-lastOnlineFailToast>8000){
-   showToast('🔊 发音暂不可用：请联网，或按登录页指引安装离线西语语音包');
+   showToast('🔊 发音暂不可用：后台优化中；或按登录页指引安装离线西语语音包');
    lastOnlineFailToast=now;
   }
   if(onAllFail)onAllFail();
